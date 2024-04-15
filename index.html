@@ -1,48 +1,66 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>欢迎来到我的个人网站</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
 
-<header>
-    <div class="container">
-        <h1>欢迎来到我的个人网站</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">主页</a></li>
-                <li><a href="about.html">关于我</a></li>
-                <li><a href="portfolio.html">作品集</a></li>
-                <li><a href="contact.html">联系我</a></li>
-            </ul>
-        </nav>
-    </div>
-</header>
-
-<div class="hero">
-    <div class="container">
-        <h2>全栈工程师 | 设计师 | 创作者</h2>
-        <p>探索我的世界，其中包含无数的代码和设计构思，为你带来无尽的创意和乐趣。</p>
-        <a href="portfolio.html" class="btn">探索更多</a>
-    </div>
-</div>
-
-<section class="about-me">
-    <div class="container">
-        <h2>我的故事</h2>
-        <p>曾经有一个普普通通的少年，他对计算机充满了好奇心。每当月圆之夜，他会一个人偷偷爬上屋顶，凝视着星空，幻想着远方的科技世界。他立志成为一名优秀的程序员，创造属于自己的未来。</p>
-        <p>经过数年的努力学习和探索，少年终于踏上了自己的编程之旅。他遇到了许多艰难险阻，但始终坚持不懈，不断突破自己的局限，不断超越自己的极限。</p>
-        <p>如今，他已经成为一名备受瞩目的全栈工程师和设计师，他的作品遍布网络的各个角落，影响着无数人的生活。但他仍然保持着对未来的向往和探索，因为在他心中，代码的世界永远充满着无限的可能性。</p>
+<!-- Hero Section -->
+<section class="hero is-primary is-fullheight">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <h1 class="title">欢迎来到我的个人网站</h1>
+            <h2 class="subtitle">探索我的世界，发现无限的可能性。</h2>
+            <a href="#about" class="button is-light is-large">了解更多</a>
+        </div>
     </div>
 </section>
 
-<footer>
+<!-- About Section -->
+<section id="about" class="section">
     <div class="container">
+        <div class="columns">
+            <div class="column is-one-third">
+                <div class="box">
+                    <h3 class="title is-3">关于我</h3>
+                    <p>我是一个热爱编程和设计的全栈工程师，致力于创造优雅、创新的解决方案。</p>
+                </div>
+            </div>
+            <div class="column">
+                <div class="box">
+                    <h3 class="title is-3">我的故事</h3>
+                    <p>我从小就对计算机产生了浓厚的兴趣，通过不断学习和实践，我逐渐成长为一名技术精湛的工程师。</p>
+                    <p>我的梦想是利用技术的力量改变世界，让人们的生活变得更加美好。</p>
+                </div>
+            </div>
+            <div class="column">
+                <div class="box">
+                    <h3 class="title is-3">我的作品</h3>
+                    <p>我曾参与开发过许多项目，涉及 Web 应用、移动应用、游戏等领域，每一个作品都是我努力的成果。</p>
+                    <p>欢迎浏览我的作品集，希望你能从中找到灵感和乐趣。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="hero is-dark is-bold">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <h2 class="title">联系我</h2>
+            <p>如果你有任何问题或建议，欢迎与我联系。我期待听到你的声音！</p>
+            <a href="contact.html" class="button is-primary is-large">联系我</a>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="content has-text-centered">
         <p>&copy; 2024 我的名字. 版权所有。</p>
     </div>
 </footer>
