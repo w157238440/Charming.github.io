@@ -11,28 +11,39 @@
 <body>
 
 <header>
-    <nav>
-        <ul>
-            <li><a href="index.html">主页</a></li>
-            <li><a href="about.html">关于我</a></li>
-            <li><a href="portfolio.html">作品集</a></li>
-            <li><a href="contact.html">联系我</a></li>
-        </ul>
-    </nav>
+    <div class="container">
+        <h1>关于我</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">主页</a></li>
+                <li><a href="about.html">关于我</a></li>
+                <li><a href="portfolio.html">作品集</a></li>
+                <li><a href="contact.html">联系我</a></li>
+            </ul>
+        </nav>
+    </div>
 </header>
 
-<div class="container">
-    <h1>关于我</h1>
-    <p>我是小明，一名全栈工程师和业余摄影师。</p>
-    <p>我热爱编程、摄影和旅行，在业余时间喜欢探索新技术和拍摄美丽的风景。</p>
-    <p>我曾参与开发了多个网站和应用程序，其中包括一个在线商城系统和一个社交媒体平台。</p>
-    <p>这个网站是我用来展示我的作品和分享我的经验的地方，希望你能喜欢。</p>
-    <a href="portfolio.html" class="btn">查看我的作品</a>
-</div>
+<section class="about-section">
+    <div class="container">
+        <div class="about-text">
+            <h2>我是小明</h2>
+            <p>我是一名热爱编程和设计的全栈工程师。我致力于将创意转化为现实，并为用户提供优秀的体验。</p>
+            <p>我拥有多年的网站开发和设计经验，精通各种前端和后端技术，熟悉多种设计工具和流程。</p>
+            <p>我相信技术和设计的力量，可以改变世界，我希望能够通过我的作品为这个世界带来一点美好。</p>
+        </div>
+        <div class="about-img">
+            <img src="img/about.jpg" alt="关于我">
+        </div>
+    </div>
+</section>
 
 <footer>
-    <p>&copy; 2024 我的名字. 版权所有。</p>
+    <div class="container">
+        <p>&copy; 2024 我的名字. 版权所有。</p>
+    </div>
 </footer>
 
+<script src="js/about.js"></script>
 </body>
 </html>
