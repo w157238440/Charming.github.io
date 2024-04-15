@@ -8,8 +8,12 @@ $(document).ready(function() {
         const $targetSection = $(sectionId);
         console.log('Target section:', $targetSection); // 输出目标部分元素
         console.log('Target section content:', $targetSection.html()); // 输出目标部分内容
+        const targetOffsetTop = $targetSection.offset().top;
+        console.log('Target offset top:', targetOffsetTop); // 输出目标部分偏移量
         $('html, body').animate({
-            scrollTop: $targetSection.offset().top
-        }, 1000);
+            scrollTop: targetOffsetTop
+        }, 1000, function() {
+            console.log('Scroll animation completed.'); // 输出滚动动画完成信息
+        });
     });
 });
