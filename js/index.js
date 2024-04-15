@@ -46,3 +46,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     setTimeout(type, 1000);
 });
+
+// Parallax effect
+document.addEventListener("scroll", function() {
+    const parallax = document.querySelectorAll(".parallax");
+    let scrollPosition = window.pageYOffset;
+
+    parallax.forEach(function(element) {
+        element.style.transform = "translateY(" + scrollPosition * 0.4 + "px)";
+    });
+});
