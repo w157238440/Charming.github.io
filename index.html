@@ -4,66 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>欢迎来到我的个人网站</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<!-- Hero Section -->
-<section class="hero is-primary is-fullheight">
-    <div class="hero-body">
-        <div class="container has-text-centered">
-            <h1 class="title">欢迎来到我的个人网站</h1>
-            <h2 class="subtitle">探索我的世界，发现无限的可能性。</h2>
-            <a href="#about" class="button is-light is-large">了解更多</a>
-        </div>
-    </div>
-</section>
+<div class="container">
+    <header>
+        <h1 class="logo">我的个人网站</h1>
+        <nav>
+            <ul>
+                <li><a href="#about">关于我</a></li>
+                <li><a href="#portfolio">作品集</a></li>
+                <li><a href="#contact">联系我</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<!-- About Section -->
-<section id="about" class="section">
-    <div class="container">
-        <div class="columns">
-            <div class="column is-one-third">
-                <div class="box">
-                    <h3 class="title is-3">关于我</h3>
-                    <p>我是一个热爱编程和设计的全栈工程师，致力于创造优雅、创新的解决方案。</p>
-                </div>
-            </div>
-            <div class="column">
-                <div class="box">
-                    <h3 class="title is-3">我的故事</h3>
-                    <p>我从小就对计算机产生了浓厚的兴趣，通过不断学习和实践，我逐渐成长为一名技术精湛的工程师。</p>
-                    <p>我的梦想是利用技术的力量改变世界，让人们的生活变得更加美好。</p>
-                </div>
-            </div>
-            <div class="column">
-                <div class="box">
-                    <h3 class="title is-3">我的作品</h3>
-                    <p>我曾参与开发过许多项目，涉及 Web 应用、移动应用、游戏等领域，每一个作品都是我努力的成果。</p>
-                    <p>欢迎浏览我的作品集，希望你能从中找到灵感和乐趣。</p>
-                </div>
-            </div>
+    <section id="hero">
+        <div class="hero-content">
+            <h2>欢迎来到我的个人网站</h2>
+            <p>探索我的世界，发现无限的可能性。</p>
+            <a href="#about" class="btn">了解更多</a>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Contact Section -->
-<section id="contact" class="hero is-dark is-bold">
-    <div class="hero-body">
-        <div class="container has-text-centered">
-            <h2 class="title">联系我</h2>
-            <p>如果你有任何问题或建议，欢迎与我联系。我期待听到你的声音！</p>
-            <a href="contact.html" class="button is-primary is-large">联系我</a>
-        </div>
-    </div>
-</section>
+    <section id="about">
+        <h2>关于我</h2>
+        <p>我是一个热爱编程和设计的全栈工程师，致力于创造优雅、创新的解决方案。</p>
+    </section>
 
-<footer class="footer">
-    <div class="content has-text-centered">
-        <p>&copy; 2024 我的名字. 版权所有。</p>
-    </div>
-</footer>
+    <section id="portfolio">
+        <h2>我的作品</h2>
+        <p>我曾参与开发过许多项目，涉及 Web 应用、移动应用、游戏等领域，每一个作品都是我努力的成果。</p>
+    </section>
+
+    <section id="contact">
+        <h2>联系我</h2>
+        <p>如果你有任何问题或建议，欢迎与我联系。我期待听到你的声音！</p>
+    </section>
+</div>
 
 <script src="js/index.js"></script>
 </body>
