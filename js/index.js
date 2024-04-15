@@ -1,58 +1,32 @@
 // js/index.js
 document.addEventListener("DOMContentLoaded", function() {
-    const aboutSection = document.getElementById('about');
-    const contactSection = document.getElementById('contact');
+    const heroSection = document.getElementById('hero');
 
-    // Smooth scroll to about section
-    const scrollToAbout = () => {
-        aboutSection.scrollIntoView({ behavior: 'smooth' });
+    // Parallax effect on hero section
+    const parallax = () => {
+        const scrollPos = window.scrollY;
+        heroSection.style.backgroundPositionY = -scrollPos * 0.3 + 'px';
     };
 
-    // Smooth scroll to contact section
-    const scrollToContact = () => {
-        contactSection.scrollIntoView({ behavior: 'smooth' });
+    window.addEventListener('scroll', parallax);
+
+    // Smooth scroll to section
+    const scrollToSection = (sectionId) => {
+        const section = document.getElementById(sectionId);
+        section.scrollIntoView({ behavior: 'smooth' });
     };
 
-    // Add event listeners to buttons
-    document.getElementById('scrollToAbout').addEventListener('click', scrollToAbout);
-    document.getElementById('scrollToContact').addEventListener('click', scrollToContact);
+    // Add event listeners to navigation links
+    document.querySelectorAll('nav ul li a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const sectionId = this.getAttribute('href').slice(1);
+            scrollToSection(sectionId);
+        });
+    });
 
-    // Typewriter effect
-    const typewriter = document.getElementById('typewriter');
-    const words = ['全栈工程师', '设计师', '创作者'];
-    let wordIndex = 0;
-    let charIndex = 0;
-
-    const type = () => {
-        if (charIndex < words[wordIndex].length) {
-            typewriter.textContent += words[wordIndex].charAt(charIndex);
-            charIndex++;
-            setTimeout(type, 100);
-        } else {
-            setTimeout(erase, 1500);
-        }
-    };
-
-    const erase = () => {
-        if (charIndex > 0) {
-            typewriter.textContent = words[wordIndex].substring(0, charIndex - 1);
-            charIndex--;
-            setTimeout(erase, 50);
-        } else {
-            wordIndex = (wordIndex + 1) % words.length;
-            setTimeout(type, 1000);
-        }
-    };
-
-    setTimeout(type, 1000);
-});
-
-// Parallax effect
-document.addEventListener("scroll", function() {
-    const parallax = document.querySelectorAll(".parallax");
-    let scrollPosition = window.pageYOffset;
-
-    parallax.forEach(function(element) {
-        element.style.transform = "translateY(" + scrollPosition * 0.4 + "px)";
+    // Add event listener to "了解更多" button
+    document.querySelector('.btn').addEventListener('click', function() {
+        scrollToSection('about');
     });
 });
