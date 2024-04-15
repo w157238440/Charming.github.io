@@ -53,20 +53,25 @@ nav ul li a {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, #007bff, #ff00ff, #00ff00, #ff0000);
-    background-size: 400% 400%;
+    z-index: -1; /* Ensure the background is behind the content */
     animation: gradientBG 15s ease infinite;
 }
 
 @keyframes gradientBG {
     0% {
-        background-position: 0% 50%;
+        background-color: #007bff;
+    }
+    25% {
+        background-color: #ff00ff;
     }
     50% {
-        background-position: 100% 50%;
+        background-color: #00ff00;
+    }
+    75% {
+        background-color: #ff0000;
     }
     100% {
-        background-position: 0% 50%;
+        background-color: #007bff;
     }
 }
 
