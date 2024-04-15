@@ -26,38 +26,47 @@
 
 <section class="gallery">
     <div class="container">
-        <div class="item">
+        <div class="item" onclick="showModal('project1')">
             <img src="img/project1.jpg" alt="作品1">
             <h3>项目名称1</h3>
             <p>项目描述1</p>
         </div>
-        <div class="item">
+        <div class="item" onclick="showModal('project2')">
             <img src="img/project2.jpg" alt="作品2">
             <h3>项目名称2</h3>
             <p>项目描述2</p>
         </div>
-        <div class="item">
+        <div class="item" onclick="showModal('project3')">
             <img src="img/project3.jpg" alt="作品3">
             <h3>项目名称3</h3>
             <p>项目描述3</p>
         </div>
-        <div class="item">
+        <div class="item" onclick="showModal('project4')">
             <img src="img/project4.jpg" alt="作品4">
             <h3>项目名称4</h3>
             <p>项目描述4</p>
         </div>
-        <div class="item">
+        <div class="item" onclick="showModal('project5')">
             <img src="img/project5.jpg" alt="作品5">
             <h3>项目名称5</h3>
             <p>项目描述5</p>
         </div>
-        <div class="item">
+        <div class="item" onclick="showModal('project6')">
             <img src="img/project6.jpg" alt="作品6">
             <h3>项目名称6</h3>
             <p>项目描述6</p>
         </div>
     </div>
 </section>
+
+<!-- 模态框 -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img id="modalImg" src="" alt="Modal Image">
+        <div id="caption"></div>
+    </div>
+</div>
 
 <footer>
     <div class="container">
