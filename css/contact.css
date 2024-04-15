@@ -1,17 +1,18 @@
 /* css/contact.css */
-.container {
-    padding: 50px 20px;
+.contact-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 100px 0;
 }
 
-.container h1 {
+.form {
+    flex: 1;
+}
+
+.form h2 {
     font-size: 36px;
-    color: #333;
-}
-
-.container p {
-    font-size: 18px;
-    color: #666;
-    line-height: 1.6;
+    margin-bottom: 20px;
 }
 
 .form-group {
@@ -34,7 +35,6 @@
 }
 
 .btn {
-    display: inline-block;
     background-color: #333;
     color: #fff;
     padding: 10px 20px;
@@ -45,4 +45,22 @@
 
 .btn:hover {
     background-color: #555;
+}
+
+.contact-info {
+    flex: 1;
+}
+
+.contact-info h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.contact-info ul {
+    padding: 0;
+    list-style: none;
+}
+
+.contact-info ul li {
+    margin-bottom: 10px;
 }
