@@ -22,5 +22,6 @@ $(document).ready(function() {
         currentIndex = (currentIndex + 1) % colors.length;
     }
 
-    setInterval(changeBackground, 3000);
+    // Decreased background change interval to 5000ms (5 seconds)
+    setInterval(changeBackground, 5000);
 });
