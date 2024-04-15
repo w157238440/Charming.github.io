@@ -11,19 +11,21 @@
 <body>
 
 <header>
-    <nav>
-        <ul>
-            <li><a href="index.html">主页</a></li>
-            <li><a href="about.html">关于我</a></li>
-            <li><a href="portfolio.html">作品集</a></li>
-            <li><a href="contact.html">联系我</a></li>
-        </ul>
-    </nav>
+    <div class="container">
+        <h1>我的作品集</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">主页</a></li>
+                <li><a href="about.html">关于我</a></li>
+                <li><a href="portfolio.html">作品集</a></li>
+                <li><a href="contact.html">联系我</a></li>
+            </ul>
+        </nav>
+    </div>
 </header>
 
-<div class="container">
-    <h1>我的作品集</h1>
-    <div class="gallery">
+<section class="gallery">
+    <div class="container">
         <div class="item">
             <img src="img/project1.jpg" alt="作品1">
             <h3>项目名称1</h3>
@@ -39,14 +41,30 @@
             <h3>项目名称3</h3>
             <p>项目描述3</p>
         </div>
+        <div class="item">
+            <img src="img/project4.jpg" alt="作品4">
+            <h3>项目名称4</h3>
+            <p>项目描述4</p>
+        </div>
+        <div class="item">
+            <img src="img/project5.jpg" alt="作品5">
+            <h3>项目名称5</h3>
+            <p>项目描述5</p>
+        </div>
+        <div class="item">
+            <img src="img/project6.jpg" alt="作品6">
+            <h3>项目名称6</h3>
+            <p>项目描述6</p>
+        </div>
     </div>
-    <p>这些是我近期完成的一些项目。我正在努力学习和提高自己的技能，以便能够做出更多令人印象深刻的作品。</p>
-    <a href="contact.html" class="btn">联系我</a>
-</div>
+</section>
 
 <footer>
-    <p>&copy; 2024 我的名字. 版权所有。</p>
+    <div class="container">
+        <p>&copy; 2024 我的名字. 版权所有。</p>
+    </div>
 </footer>
 
+<script src="js/portfolio.js"></script>
 </body>
 </html>
