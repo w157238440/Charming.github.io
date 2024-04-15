@@ -1,18 +1,20 @@
 /* css/index.css */
-.container {
+.hero {
+    background-image: url('img/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
     text-align: center;
-    padding: 50px 20px;
+    padding: 100px 0;
 }
 
-.container h1 {
+.hero h2 {
     font-size: 36px;
-    color: #333;
 }
 
-.container p {
+.hero p {
     font-size: 18px;
-    color: #666;
-    line-height: 1.6;
+    margin-bottom: 30px;
 }
 
 .btn {
