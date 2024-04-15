@@ -1,15 +1,5 @@
 // js/index.js
 document.addEventListener("DOMContentLoaded", function() {
-    const heroSection = document.getElementById('hero');
-
-    // Parallax effect on hero section
-    const parallax = () => {
-        const scrollPos = window.scrollY;
-        heroSection.style.backgroundPositionY = -scrollPos * 0.3 + 'px';
-    };
-
-    window.addEventListener('scroll', parallax);
-
     // Smooth scroll to section
     const scrollToSection = (sectionId) => {
         const section = document.getElementById(sectionId);
