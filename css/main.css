@@ -1,45 +1,15 @@
 /* css/main.css */
-/* 主要样式表，包含全局样式 */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 .container {
-    width: 90%;
-    margin: 0 auto;
     max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 20px 0;
-}
-
-header nav ul {
-    list-style: none;
-    padding: 0;
-}
-
-header nav ul li {
-    display: inline;
-    margin-right: 20px;
-}
-
-header nav ul li a {
-    color: #fff;
-    text-decoration: none;
-}
-
-footer {
-    background-color: #333;
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
-}
-
-footer p {
-    margin: 0;
-}
+/* 其他页面的样式文件类似 */
