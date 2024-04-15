@@ -9,6 +9,7 @@
     color: white;
     text-align: center;
     position: relative;
+    overflow: hidden; /* Hide overflow for parallax effect */
 }
 
 .hero::before {
@@ -83,6 +84,15 @@
 @keyframes blink-caret {
     from, to { border-color: transparent }
     50% { border-color: orange }
+}
+
+/* Parallax effect styles */
+.parallax {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transform: translateY(0); /* Initial transform for parallax */
 }
 
 /* Add more custom styles as needed */
