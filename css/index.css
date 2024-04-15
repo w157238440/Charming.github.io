@@ -1,4 +1,4 @@
-/* css/style.css */
+/* css/index.css */
 /* Reset CSS */
 * {
     margin: 0;
@@ -43,12 +43,38 @@ nav ul li a {
 
 /* Hero section */
 #hero {
-    background-image: url('your-hero-image.jpg');
-    background-size: cover;
-    background-position: center;
-    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #007bff, #ff00ff, #00ff00, #ff0000);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
     text-align: center;
-    padding: 100px 0;
+    padding: 150px 0;
 }
 
 .hero-content h2 {
