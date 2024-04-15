@@ -23,5 +23,5 @@ $(document).ready(function() {
     }
 
     // Decreased background change interval to 5000ms (5 seconds)
-    setInterval(changeBackground, 10000);
+    setInterval(changeBackground, 20000);
 });
