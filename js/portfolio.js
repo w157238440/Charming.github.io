@@ -1,6 +1,21 @@
 // js/portfolio.js
+function showModal(projectId) {
+    const modal = document.getElementById('myModal');
+    const modalImg = document.getElementById('modalImg');
+    const captionText = document.getElementById('caption');
+    const img = document.querySelector(`#${projectId} img`);
+    const caption = document.querySelector(`#${projectId} h3`).textContent;
+
+    modal.style.display = 'block';
+    modalImg.src = img.src;
+    captionText.innerHTML = caption;
+}
+
+function closeModal() {
+    document.getElementById('myModal').style.display = 'none';
+}
+
 document.addEventListener("DOMContentLoaded", function() {
-    // 在作品集页面的 JavaScript 中可以添加一些动画和效果
     const items = document.querySelectorAll('.item');
 
     items.forEach(item => {
