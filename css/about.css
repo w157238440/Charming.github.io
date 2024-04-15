@@ -1,0 +1,16 @@
+/* 关于页面样式 */
+#about {
+    text-align: center;
+    padding: 100px 0;
+}
+
+#about h2 {
+    font-size: 3em;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#about p {
+    font-size: 1.2em;
+    line-height: 1.6;
+}

@@ -1,0 +1,47 @@
+/* 联系页面样式 */
+#contact {
+    text-align: center;
+    padding: 100px 0;
+}
+
+#contact h2 {
+    font-size: 3em;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#contact p {
+    font-size: 1.2em;
+    line-height: 1.6;
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-form button {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 15px;
+    font-size: 1.1em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: #ff4500;
+    outline: none;
+}
+
+.contact-form button {
+    background-color: #ff4500;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.contact-form button:hover {
+    background-color: #ff6347;
+}

@@ -1,0 +1,46 @@
+/* 作品页面样式 */
+#portfolio {
+    text-align: center;
+    padding: 100px 0;
+}
+
+#portfolio h2 {
+    font-size: 3em;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.portfolio {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.portfolio-item {
+    width: 300px;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+}
+
+.portfolio-item:hover {
+    transform: scale(1.05);
+}
+
+.portfolio-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.portfolio-item h3 {
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+.portfolio-item p {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
