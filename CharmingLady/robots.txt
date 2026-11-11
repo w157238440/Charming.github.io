@@ -8,4 +8,4 @@ Allow: /
 Disallow: /docs/
 
 # 站点地图（绝对地址，必须是 https）
-Sitemap: https://charminglady.github.io/sitemap.xml
+Sitemap: https://charminglady.github.io/CharmingLady/sitemap.xml
