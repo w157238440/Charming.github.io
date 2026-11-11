@@ -148,6 +148,12 @@
         </div>
 
         <p class="gb-empty" id="gb-empty" hidden>正在载入留言…</p>
+        <!-- 分页条：每页 10 条（PAGE_SIZE 在 guestbook.js 顶部），由脚本控制显隐与禁用态 -->
+        <nav class="gb-pager" id="gb-pager" aria-label="留言分页" hidden>
+          <button class="gb-page-btn" type="button" id="gb-prev" aria-disabled="true" disabled>上一页</button>
+          <p class="gb-page-info mono" id="gb-page-info" aria-live="polite">第 1 / 1 页</p>
+          <button class="gb-page-btn" type="button" id="gb-next" aria-disabled="true" disabled>下一页</button>
+        </nav>
 
         <p class="gb-hint mono">
           提示：按 Esc 可清空检索框；标着「仅本机可见」的条目只存在于当前浏览器，别人看不到。
