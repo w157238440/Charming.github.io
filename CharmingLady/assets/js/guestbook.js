@@ -36,6 +36,7 @@
 
   var STORAGE_KEY = "cl-guestbook-v2"; // 换版本号等于换一个独立命名空间
   var MAX_LOCAL = 200;                 // 本机最多存多少条
+  var PAGE_SIZE = 10;                  // 每页显示几条；和「共 N 条」一起决定分页数
   var NAME_MAX = 16;
   var ROLE_MAX = 24;
   var CITY_MAX = 12;
@@ -126,15 +127,7 @@
       date: "2026-09-28",
       tag: "闲话",
       text: "第一次见到把「免责声明」写成十六条还带目录的站点。看完反而更信任了。"
-    },
-    {
-    "name": "测试",
-    "role": "测试测试",
-    "city": "测试测试",
-    "date": "2026-11-12",
-    "tag": "技术交流",
-    "text": "测试测试测试测试"
-   }
+    }
   ];
 
   /* ---------- 2. 工具 ---------- */
@@ -191,7 +184,8 @@
     seed: [],
     local: [],
     keyword: "",
-    tag: "全部"
+    tag: "全部",
+    page: 1 // 当前页码，从 1 起；检索条件一变就回到第一页
   };
 
   function normalizeSeed() {
@@ -313,12 +307,22 @@
       return matches(item, keyword, state.tag);
     });
 
+    /* 分页：先算出总页数，再把页码夹在合法区间里。
+       删到只剩一页时页码可能是 2，这里顺手纠正，免得列表空白却显示「第 2 / 1 页」。 */
+    var pageCount = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
+    if (state.page > pageCount) state.page = pageCount;
+    if (state.page < 1) state.page = 1;
+    var start = (state.page - 1) * PAGE_SIZE;
+    var paged = visible.slice(start, start + PAGE_SIZE);
+
     list.textContent = ""; // 清空（这里安全：不涉及用户内容）
     var frag = document.createDocumentFragment();
-    visible.forEach(function (item) {
+    paged.forEach(function (item) {
       frag.appendChild(buildCard(item));
     });
     list.appendChild(frag);
+
+    renderPager(visible.length, pageCount);
 
     if (empty) {
       var hasFilter = !!keyword || (state.tag && state.tag !== "全部");
@@ -334,12 +338,42 @@
       var total = state.seed.length + state.local.length;
       var parts = "共 " + total + " 条";
       if (state.local.length) parts += "，其中本机新增 " + state.local.length + " 条";
-      if (keyword || (state.tag && state.tag !== "全部")) parts += "，当前显示 " + visible.length + " 条";
+      if (keyword || (state.tag && state.tag !== "全部")) {
+        parts += "，匹配 " + visible.length + " 条";
+        if (visible.length > PAGE_SIZE) {
+          parts += "，本页显示第 " + (start + 1) + "–" + (start + paged.length) + " 条";
+        }
+      }
       count.textContent = parts;
     }
 
     // 本机留言变化时，同步更新「导出并并入」那段代码窗（还没初始化时跳过）
     if (state.refreshOutput) state.refreshOutput();
+  }
+
+  /* ---------- 5b. 分页条 ----------
+     只显示「第 x / y 页」和上一页 / 下一页两个按钮，不做页码列表：
+     留言总量最多两百来条，页码列表反而更长、也更难点准。
+     按钮用 disabled + aria-disabled 双保险，键盘用户也能看出点不动。 */
+  function renderPager(visibleCount, pageCount) {
+    var pager = $("#gb-pager");
+    var info = $("#gb-page-info");
+    var prev = $("#gb-prev");
+    var next = $("#gb-next");
+    if (!pager) return;
+
+    pager.hidden = visibleCount === 0;
+    if (info) {
+      info.textContent = "第 " + state.page + " / " + pageCount + " 页 · 共 " + visibleCount + " 条";
+    }
+    if (prev) {
+      prev.disabled = state.page <= 1;
+      prev.setAttribute("aria-disabled", state.page <= 1 ? "true" : "false");
+    }
+    if (next) {
+      next.disabled = state.page >= pageCount;
+      next.setAttribute("aria-disabled", state.page >= pageCount ? "true" : "false");
+    }
   }
 
   /* ---------- 6. 检索与筛选 ---------- */
@@ -353,6 +387,7 @@
       window.clearTimeout(timer);
       timer = window.setTimeout(function () {
         state.keyword = input.value;
+        state.page = 1; // 换了关键词就回第一页，否则可能落在空页上
         renderList();
       }, 80);
     });
@@ -362,6 +397,7 @@
       if (e.key === "Escape") {
         input.value = "";
         state.keyword = "";
+        state.page = 1;
         renderList();
       }
     });
@@ -369,12 +405,45 @@
     $all("[data-gb-tag]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         state.tag = btn.getAttribute("data-gb-tag") || "全部";
+        state.page = 1;
         $all("[data-gb-tag]").forEach(function (other) {
           other.setAttribute("aria-pressed", other === btn ? "true" : "false");
         });
         renderList();
       });
     });
+  }
+
+  /* 翻页后如果列表头已经滚出视野，就把它拉回来；
+     用平滑滚动，但尊重系统的「减少动态效果」偏好。 */
+  function scrollToListTop() {
+    var head = $("#gb-list-head");
+    if (!head) return;
+    if (head.getBoundingClientRect().top >= 0) return; // 还在视野里，不打扰
+    var smooth = true;
+    if (typeof CL.prefersReduced === "function" && CL.prefersReduced()) smooth = false;
+    head.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+  }
+
+  function initPager() {
+    var prev = $("#gb-prev");
+    var next = $("#gb-next");
+    if (prev) {
+      prev.addEventListener("click", function () {
+        if (state.page <= 1) return;
+        state.page -= 1;
+        renderList();
+        scrollToListTop();
+      });
+    }
+    if (next) {
+      next.addEventListener("click", function () {
+        if (next.disabled) return; // 已到最后一页，按钮本身也是 disabled
+        state.page += 1;
+        renderList();
+        scrollToListTop();
+      });
+    }
   }
 
   /* ---------- 7. 提交 ----------
@@ -447,6 +516,7 @@
         state.local = state.local.slice(1); // 写失败就回滚，避免界面骗人
       }
 
+      state.page = 1; // 新留言按日期倒序排在最前，回到第一页才看得见它
       renderList();
 
       if (feedback) {
@@ -586,6 +656,7 @@
 
     renderList();   // 先出列表（此时还没有导出面板，跳过同步）
     initSearch();
+    initPager();
     initForm();
     initExport();
   }
@@ -595,11 +666,4 @@
   } else {
     boot();
   }
-
-  /* 暴露给控制台调试与未来的合并脚本（可选，不影响页面） */
-  window.CL_GUESTBOOK = {
-    seed: SEED,
-    readLocal: readLocal,
-    exportPayload: exportPayload
-  };
 })();
