@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!--
+  ==============================================================================
+  404.html — 自定义 404
+  ------------------------------------------------------------------------------
+  注意：GitHub Pages 在任意层级返回 404 时都会用这个页面，此时「当前目录」
+        可能是 /foo/bar/，相对路径会全部裂开。所以本页所有链接与资源一律用
+        根路径（以 / 开头）。如果你的站点部署在子路径（例如 /CharmingLady.github.io/），
+        请把下面的 "/" 统一改成 "/你的仓库名/"。
+  结构：站点页面已集中到 pages/ 目录，因此这里的入口链接写 /pages/xxx.html。
+  ==============================================================================
+-->
+<html lang="zh-CN" data-theme="light">
+<head>
+  <script>document.documentElement.classList.add('js');</script>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 — 这个地址上没有页面 · CharmingLady</title>
+  <meta name="description" content="页面不存在，可能是链接写错了，或者内容已经挪了位置。这里给出站内全部入口。">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#f4f3ed">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/layout.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/effects.css">
+  <link rel="stylesheet" href="/assets/css/pages.css">
+  <script src="/assets/js/core.js" defer></script>
+</head>
+
+<body data-page="404">
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="/" aria-label="CharmingLady 首页">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M16 5.5v21M5.5 16h21" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="16" cy="16" r="3.2" fill="currentColor"/>
+        </svg>
+        <span class="brand-text">
+          <span class="brand-name">CharmingLady</span>
+          <span class="brand-sub">Frontend · Backend · Miniapp</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/" data-nav="home">首页</a>
+        <a href="/pages/about.html" data-nav="about">关于</a>
+        <a href="/pages/projects.html" data-nav="projects">项目</a>
+        <a href="/pages/notes.html" data-nav="notes">笔记</a>
+        <a href="/pages/services.html" data-nav="services">服务</a>
+        <a href="/pages/contact.html" data-nav="contact">联系</a>
+      </nav>
+      <div class="header-tools">
+        <button class="theme-toggle mono" type="button" data-theme-toggle aria-pressed="false" aria-label="切换到深色主题">
+          <span data-theme-label>深色</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="shell page-404">
+    <p class="eyebrow">错误 · 404</p>
+    <p class="mono big-404">404</p>
+    <h1 class="h1-404">这个地址上没有页面。</h1>
+    <p class="lead lead--tight">
+      可能是链接拼错了，也可能是我把内容挪了位置。下面几个入口都还在。
+    </p>
+    <div class="cta-actions cta-actions--mt">
+      <a class="btn" href="/">回首页</a>
+      <a class="btn btn--ghost" href="/pages/projects.html">看项目</a>
+      <a class="btn btn--ghost" href="/pages/contact.html">写信给我</a>
+    </div>
+
+    <!-- 全站入口：避免 404 之后无路可走 -->
+    <div class="grid-4">
+      <div>
+        <p class="mono eyebrow eyebrow--mb">全部页面</p>
+        <ul class="plain-list">
+          <li><a href="/pages/about.html">关于</a></li>
+          <li><a href="/pages/projects.html">项目</a></li>
+          <li><a href="/pages/notes.html">笔记</a></li>
+          <li><a href="/pages/services.html">服务与合作</a></li>
+          <li><a href="/pages/lab.html">实验台</a></li>
+          <li><a href="/pages/faq.html">常见问题</a></li>
+          <li><a href="/pages/guestbook.html">留言簿</a></li>
+          <li><a href="/pages/uses.html">装备与工具</a></li>
+          <li><a href="/pages/colophon.html">站点说明</a></li>
+          <li><a href="/pages/contact.html">联系</a></li>
+          <li><a href="/pages/disclaimer.html">免责声明</a></li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-bottom footer-bottom--flush">
+        <span>© <span data-year>2026</span> CharmingLady · 北京</span>
+        <span>页面不存在，但人还在 · 内容说明见 <a class="link-more" href="/pages/disclaimer.html">免责声明</a></span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

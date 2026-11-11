@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<!--
+  ==============================================================================
+  contact.html — 联系（联系方式 / 表单校验 / 合作须知 / FAQ）
+  ------------------------------------------------------------------------------
+  关于表单的重要声明：
+    本站是纯静态站，没有后端，表单**不会自动发送**。提交后由 contact.js 做三件事：
+    校验字段 → 拼出一封 mailto 草稿 → 显示「用本机邮件客户端发送」的按钮。
+    如果你的服务器支持接口，把 contact.js 末尾改成 fetch 提交即可，注释里标了位置。
+  ==============================================================================
+-->
+<html lang="zh-CN" data-theme="light">
+<head>
+  <script>document.documentElement.classList.add('js');</script>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>联系 — CharmingLady</title>
+  <meta name="description" content="项目咨询、合作邀约或技术交流。写清现状与目标，24 小时内回复。">
+  <meta name="author" content="CharmingLady">
+  <meta name="theme-color" content="#f4f3ed">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="联系 CharmingLady">
+  <meta property="og:description" content="说清需求，24 小时内回复。">
+
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/effects.css">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+
+  <script src="../assets/js/core.js" defer></script>
+  <script src="../assets/js/effects.js" defer></script>
+  <script src="../assets/js/ui.js" defer></script>
+  <script src="../assets/js/contact.js" defer></script>
+
+  <!-- 结构化数据：帮助搜索引擎理解「这是一个提供服务的个人」 -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "CharmingLady",
+    "description": "前端、后端与小程序全栈开发",
+    "areaServed": "CN",
+    "email": "hi@charminglady.dev",
+    "url": "https://charminglady.github.io/"
+  }
+  </script>
+</head>
+
+<body data-page="contact">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="../index.html" aria-label="CharmingLady 首页">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M16 5.5v21M5.5 16h21" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="16" cy="16" r="3.2" fill="currentColor"/>
+        </svg>
+        <span class="brand-text">
+          <span class="brand-name">CharmingLady</span>
+          <span class="brand-sub">Frontend · Backend · Miniapp</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="主导航">
+        <a href="../index.html" data-nav="home">首页</a>
+        <a href="about.html" data-nav="about">关于</a>
+        <a href="projects.html" data-nav="projects">项目</a>
+        <a href="notes.html" data-nav="notes">笔记</a>
+        <a href="services.html" data-nav="services">服务</a>
+        <a href="guestbook.html" data-nav="guestbook">留言簿</a>
+        <a href="contact.html" data-nav="contact">联系</a>
+      </nav>
+
+      <div class="header-tools">
+        <button class="theme-toggle mono" type="button" data-theme-toggle aria-pressed="false" aria-label="切换到深色主题">
+          <span data-theme-label>深色</span>
+        </button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-drawer" aria-label="打开导航菜单">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 移动端抽屉导航：与页头导航同源，内容更全（含次要页面与邮箱） -->
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="../index.html">首页 <span>01</span></a>
+    <a href="about.html">关于 <span>02</span></a>
+    <a href="projects.html">项目 <span>03</span></a>
+    <a href="notes.html">笔记 <span>04</span></a>
+    <a href="services.html">服务与合作 <span>05</span></a>
+    <a href="lab.html">实验台 <span>06</span></a>
+    <a href="faq.html">常见问题 <span>07</span></a>
+    <a href="guestbook.html">留言簿 <span>08</span></a>
+    <a href="uses.html">装备与工具 <span>09</span></a>
+    <a href="colophon.html">站点说明 <span>10</span></a>
+    <a href="contact.html">联系 <span>11</span></a>
+    <a href="disclaimer.html">免责声明 <span>12</span></a>
+    <a href="mailto:hi@charminglady.dev">hi@charminglady.dev <span>→</span></a>
+  </div>
+
+  <main id="main">
+    <section class="shell page-head">
+      <p class="eyebrow">联系 · 24 小时内回复</p>
+      <h1>把「要解决什么」说清楚，比说「想要高级感」有用。</h1>
+      <p class="lead">一封邮件写清三件事就够：你现在在做什么、想解决什么问题、时间和预算大概是什么量级。</p>
+    </section>
+
+    <section class="shell section">
+      <div class="grid-2 grid--start grid--wide">
+        <!-- 左栏：联系方式与须知 -->
+        <div>
+          <div class="panel" data-reveal>
+            <h3>直接联系</h3>
+            <dl class="kv kv--flush">
+              <div class="kv-row"><dt>邮箱</dt><dd><a href="mailto:hi@charminglady.dev">hi@charminglady.dev</a></dd></div>
+              <div class="kv-row"><dt>微信</dt><dd class="mono">charminglady（备注「项目 + 称呼」）</dd></div>
+              <div class="kv-row"><dt>电话</dt><dd class="mono">010-0000-0000（工作日 10:00–19:00）</dd></div>
+              <div class="kv-row"><dt>代码</dt><dd><a href="https://github.com/" rel="noopener">github.com/charminglady</a></dd></div>
+              <div class="kv-row"><dt>时区</dt><dd class="mono">UTC+8 · 北京 / 可远程</dd></div>
+            </dl>
+          </div>
+
+          <div class="panel" data-reveal data-delay="60">
+            <h3>响应节奏</h3>
+            <dl class="kv kv--flush">
+              <div class="kv-row"><dt>新项目</dt><dd>两个工作日内回一封带判断的邮件</dd></div>
+              <div class="kv-row"><dt>在做的项目</dt><dd>当天回复，紧急事项直接电话</dd></div>
+              <div class="kv-row"><dt>排期</dt><dd>本月剩 1 个空档，下月起 2 个</dd></div>
+            </dl>
+          </div>
+
+          <div class="panel" data-reveal data-delay="120">
+            <h3>合作须知</h3>
+            <ul class="plain-list">
+              <li class="mono">01 · 先确认范围与验收标准，再谈价格</li>
+              <li class="mono">02 · 分 3 期付款：启动 40% / 中期 40% / 上线 20%</li>
+              <li class="mono">03 · 需求变更走书面确认，超出范围单独报价</li>
+              <li class="mono">04 · 上线后 30 天内的问题免费处理</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 右栏：表单 -->
+        <div data-reveal data-delay="80">
+          <form class="form" id="contact-form" novalidate>
+            <div class="field" id="name-field">
+              <label for="name">怎么称呼你 <span class="req">*</span></label>
+              <input type="text" id="name" name="name" placeholder="姓名或公司名" autocomplete="name">
+              <p class="field-error" id="name-error" role="alert"></p>
+            </div>
+
+            <div class="field" id="email-field">
+              <label for="email">邮箱 <span class="req">*</span></label>
+              <input type="email" id="email" name="email" placeholder="name@company.com" autocomplete="email">
+              <p class="field-error" id="email-error" role="alert"></p>
+            </div>
+
+            <div class="field" id="type-field">
+              <label for="type">项目类型 <span class="req">*</span></label>
+              <select id="type" name="type">
+                <option value="">请选择</option>
+                <option value="网站 / 官网">网站 / 官网</option>
+                <option value="管理后台">管理后台</option>
+                <option value="微信小程序">微信小程序</option>
+                <option value="后端接口 / 部署">后端接口 / 部署</option>
+                <option value="现有项目改造">现有项目改造</option>
+                <option value="技术咨询">技术咨询</option>
+              </select>
+              <p class="field-error" id="type-error" role="alert"></p>
+            </div>
+
+            <div class="field" id="budget-field">
+              <label for="budget">预算区间（选填）</label>
+              <select id="budget" name="budget">
+                <option value="">不方便说也没关系</option>
+                <option value="1 万以内">1 万以内</option>
+                <option value="1–3 万">1–3 万</option>
+                <option value="3–8 万">3–8 万</option>
+                <option value="8 万以上">8 万以上</option>
+                <option value="还没定">还没定</option>
+              </select>
+              <p class="field-error" id="budget-error" role="alert"></p>
+            </div>
+
+            <div class="field field--full" id="message-field">
+              <label for="message">想解决什么问题 <span class="req">*</span></label>
+              <textarea id="message" name="message" placeholder="现状、你希望变成什么样、有没有时间节点。三五行就够。"></textarea>
+              <p class="field-error" id="message-error" role="alert"></p>
+            </div>
+
+            <div class="form-foot">
+              <button class="btn" type="submit" data-magnetic>校验内容，生成邮件</button>
+              <p class="form-note">
+                本站是静态站点，没有后端。提交后只会校验内容并在本机生成一封邮件草稿，
+                不会上传到任何服务器——你需要点下一步的按钮，用自己的邮件客户端发送。
+              </p>
+              <div class="form-feedback" id="form-feedback">
+                <b>内容已校验通过。</b>
+                点下面的按钮，用你电脑上的邮件客户端打开这封草稿，确认后发送即可。
+                <div class="feedback-action">
+                  <a class="btn btn--sm" id="mailto-link" href="mailto:hi@charminglady.dev">打开邮件客户端发送</a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="section" id="faq">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">常见问题</p>
+            <h2>五个被问最多的问题</h2>
+          </div>
+          <p class="section-note">如果这里没写，邮件里直接问，我会如实回答。</p>
+        </div>
+
+        <div class="acc" data-accordion>
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              一个人做整个项目，靠谱吗？
+              <i aria-hidden="true"></i>
+            </button>
+            <div class="acc-panel"><div><p>一个项目里最贵的成本不是写代码，是沟通。一个人做的好处是不用开会同步，坏处是没人帮你查漏。我的做法是把检查清单写死：上线前必须过安全、性能、兼容、备份四项，每项都有具体条目。</p></div></div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              报价怎么算？
+              <i aria-hidden="true"></i>
+            </button>
+            <div class="acc-panel"><div><p>按范围报价，不按工时。范围在第二步「方案与拆解」之后确定，报价单里会写清包含什么、不包含什么、超出部分怎么算。这样你不用担心我拖时间，我也不用担心范围无限膨胀。</p></div></div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              可以用我自己的设计稿吗？
+              <i aria-hidden="true"></i>
+            </button>
+            <div class="acc-panel"><div><p>可以，而且推荐。Figma 稿可以直接对着实现；只有口头描述的话，我会先出一个低保真原型确认结构，再进开发，避免做到一半才发现理解错了。</p></div></div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              上线后出问题怎么办？
+              <i aria-hidden="true"></i>
+            </button>
+            <div class="acc-panel"><div><p>上线后 30 天内的问题免费处理。之后可以选择按月维护（含监控、备份检查、小改动），也可以一次性买断代码与文档，自己团队接手——交接文档和录屏都会给全。</p></div></div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              能只做其中一部分吗？
+              <i aria-hidden="true"></i>
+            </button>
+            <div class="acc-panel"><div><p>可以。常见的是「只做小程序前端，接口由你们后端出」，或者「只做接口与部署，界面已经有」。这种情况下我会先读一遍现有代码，评估接口契约是否够用，再给结论。</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="brand-name brand-name--lg">CharmingLady</p>
+          <p>前端 / 后端 / 小程序，一人交付。这个站点本身也是一件作品：纯静态、零依赖、断网可开。</p>
+        </div>
+
+        <div class="footer-col">
+          <h3>站点</h3>
+          <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="about.html">关于</a></li>
+            <li><a href="projects.html">项目</a></li>
+            <li><a href="notes.html">笔记</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>更多</h3>
+          <ul>
+            <li><a href="services.html">服务与合作</a></li>
+            <li><a href="lab.html">实验台</a></li>
+            <li><a href="faq.html">常见问题</a></li>
+            <li><a href="guestbook.html">留言簿</a></li>
+            <li><a href="uses.html">装备与工具</a></li>
+            <li><a href="colophon.html">站点说明</a></li>
+            <li><a href="disclaimer.html">免责声明</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>联系</h3>
+          <ul>
+            <li><a href="mailto:hi@charminglady.dev">hi@charminglady.dev</a></li>
+            <li><a href="contact.html">表单 / 微信 / 电话</a></li>
+            <li><span class="mono">北京 · UTC+8</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> CharmingLady · 代码 MIT，文字与图片 CC BY-NC 4.0</span>
+        <span>本站为演示性质作品集，内容与数据说明见<a class="link-more" href="disclaimer.html">免责声明</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <button class="to-top" type="button" aria-label="回到顶部">↑</button>
+</body>
+</html>

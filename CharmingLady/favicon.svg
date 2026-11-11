@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="CharmingLady">
+  <!--
+    favicon — 「套准标记」：外圈 + 十字准线 + 中心实心点。
+    含义：做设计还原时用到的对位符号，也暗合「前端 / 后端 / 小程序」三条线在同一点交汇。
+    纯几何、单色，任何尺寸下都不会糊。
+  -->
+  <circle cx="16" cy="16" r="14.2" fill="none" stroke="#0f1714" stroke-width="1.6"/>
+  <path d="M16 4.2v23.6M4.2 16h23.6" stroke="#0f1714" stroke-width="1.6"/>
+  <circle cx="16" cy="16" r="3.6" fill="#a6402b"/>
+</svg>

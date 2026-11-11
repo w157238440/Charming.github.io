@@ -1,0 +1,890 @@
+/* ==============================================================================
+   pages.css — 页面级版式（只放某一页独有的东西）
+   ------------------------------------------------------------------------------
+   层级说明：base（令牌）→ layout（骨架）→ components（通用组件）→ effects（动效）
+             → pages（本文件，页面独有版式，最后加载以便覆盖）。
+   原则：这里不定义通用组件（按钮、标签、面板都在 components.css），
+        只放「服务页的价目表」「实验台的演示槽位」「装备页的名录行」
+        「免责声明的条款排版」这四类只在一页出现的东西。
+   ============================================================================== */
+
+/* ---------- 0. 区块标题组里的眉标 ---------- */
+/* 桌面端 .section-head 是「标题左 / 说明右」两列（layout.css 第 514 行）。
+   一旦标题组里还带一行眉标（如 FAQ、站点说明页），眉标必须独占整行，
+   否则 h2 会被自动排到右列、说明被挤到左列并右对齐，看起来像版式错乱。 */
+.section-head .eyebrow {
+  grid-column: 1 / -1;
+}
+
+/* ---------- 1. 服务页：三档合作 ---------- */
+/* 页面头部的元信息行（档期、响应时间这类「小字」） */
+.page-meta {
+  margin-top: 18px;
+  font-size: 11.5px;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+}
+
+/* 实验台色板：把令牌变量画出来，颜色写死在 CSS 里而不是 inline style */
+.swatch-ink {
+  background: var(--ink);
+}
+
+.swatch-paper {
+  background: var(--paper-2);
+}
+
+.swatch-accent {
+  background: var(--accent);
+}
+
+.swatch-jade {
+  background: var(--jade);
+}
+
+.tiers {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--line-strong);
+}
+
+.tier {
+  display: grid;
+  gap: 16px;
+  padding: 24px 0 28px;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+}
+
+.tier-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.tier h3 {
+  font-size: 18px;
+}
+
+.tier-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  flex: none;
+}
+
+/* 价格用等宽数字，避免各档位宽度不一致导致对齐跳动 */
+.tier-price {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.tier-price b {
+  font-family: var(--fig);
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.tier p {
+  font-size: 13.5px;
+  color: var(--ink-2);
+  max-width: 46em;
+}
+
+/* 每档包含项：两列起步，窄屏单列 */
+.tier-list {
+  display: grid;
+  gap: 8px 24px;
+  margin-top: 4px;
+}
+
+.tier-list li {
+  display: grid;
+  grid-template-columns: 10px 1fr;
+  gap: 10px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  align-items: baseline;
+}
+
+.tier-list li::before {
+  content: "";
+  width: 5px;
+  height: 1px;
+  background: var(--line-strong);
+  transform: translateY(-4px);
+}
+
+/* 不包含项：用删除线语气，但不用删除线本身（避免像营销页） */
+.tier-out {
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+/* ---------- 2. 实验台：演示槽位 ---------- */
+.lab-grid {
+  display: grid;
+  gap: 28px;
+}
+
+.demo {
+  display: grid;
+  gap: 12px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.demo-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+}
+
+.demo-label b {
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+/* 演示区：给组件一个中立底，避免和页面底色混在一起看不清边界 */
+.demo-stage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px;
+  border: 1px dashed var(--line);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--paper-2) 60%, transparent);
+}
+
+.demo-stage p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+/* 波形画布：固定高度，宽度自适应，DPR 由 lab.js 处理 */
+.wave {
+  width: 100%;
+  height: 168px;
+  display: block;
+  border: 1px solid var(--line);
+  background: var(--ink);
+}
+
+/* 坐标读数：等宽、带前导零，像调试面板 */
+.hud {
+  display: grid;
+  gap: 2px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-2);
+}
+
+.hud span {
+  color: var(--ink-3);
+}
+
+.hud-row {
+  display: grid;
+  grid-template-columns: 62px 88px 1fr;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+/* 色板：每个色块下面挂变量名，让「令牌」这件事看得见 */
+.swatches {
+  display: grid;
+  gap: 12px;
+}
+
+.swatch {
+  display: grid;
+  gap: 6px;
+}
+
+.swatch i {
+  display: block;
+  height: 54px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+}
+
+.swatch code {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+/* 动效开关：一个真实的开关控件，用来现场对比 reduced-motion 的效果 */
+.switch-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+
+.switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  flex: none;
+}
+
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ink-3);
+  transition: transform var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease);
+}
+
+.switch[aria-pressed="true"] {
+  border-color: var(--accent);
+}
+
+.switch[aria-pressed="true"]::after {
+  transform: translateX(20px);
+  background: var(--accent);
+}
+
+/* ---------- 3. 装备页：名录行 ---------- */
+/* 名录行：标题 / 说明 / 右标记。
+   三件元素都在同一行里，必须**逐项指定网格位置**——只写 grid-template-columns
+   而不管子项，自动流会把说明塞进 auto 那一列（标记列），标题被挤到下一行，
+   整块内容只剩半宽，看起来像「整体缩进 + 说明窄成一列」。 */
+.use-group {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--line-strong);
+}
+
+.use-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.use-row h3 {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.use-row p {
+  grid-column: 1;
+  grid-row: 2;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  max-width: 52em;
+}
+
+/* 右侧标记（「在用」/「已换掉」/「考虑中」） */
+.use-flag {
+  grid-column: 1;
+  grid-row: 3;
+  justify-self: start;
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  border: 1px solid var(--line);
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+.use-flag--on {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ---------- 4. 免责声明：条款排版 ---------- */
+.legal {
+  display: grid;
+  gap: 0;
+}
+
+.legal-meta {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 28px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+.legal-toc {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 10px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.legal-toc a {
+  display: flex;
+  gap: 10px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+  padding: 3px 0;
+  transition: color var(--t-fast) var(--ease);
+}
+
+.legal-toc a:hover {
+  color: var(--accent);
+}
+
+.legal-toc span {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  width: 22px;
+  flex: none;
+}
+
+.legal article {
+  padding-top: 26px;
+}
+
+.legal article h2 {
+  font-size: 15px;
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+  color: var(--accent);
+}
+
+.legal article > p {
+  margin-top: 10px;
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--ink-2);
+  max-width: 46em;
+}
+
+.legal article ul {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.legal article li {
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--ink-2);
+  max-width: 46em;
+  padding-left: 14px;
+  position: relative;
+}
+
+/* 条款列表用短横线做项目符号，与全站发丝线语言一致 */
+.legal article li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 6px;
+  height: 1px;
+  background: var(--line-strong);
+}
+
+/* 醒目提示块：只用于「本站内容为虚构」这类必须看清的话 */
+.callout {
+  margin-top: 28px;
+  padding: 18px 20px;
+  border: 1px solid var(--line-strong);
+  border-left: 3px solid var(--accent);
+  background: color-mix(in srgb, var(--paper-2) 55%, transparent);
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--ink-2);
+}
+
+.callout b {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--ink);
+  font-size: 13px;
+}
+
+/* ---------- 5. 轻量提示条（实验台演示按钮用） ---------- */
+/* 为什么不用 alert：alert 会阻塞整页，而且样式不受控；这里用一层固定定位的条，
+   2.4 秒后自动消失，并用 role="status" 让读屏能念出来。 */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  z-index: 130;
+  max-width: min(88vw, 520px);
+  padding: 12px 18px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 12.5px;
+  line-height: 1.7;
+  border-radius: 2px;
+  opacity: 0;
+  transform: translate(-50%, 14px);
+  pointer-events: none;
+  transition: opacity 240ms var(--ease), transform 240ms var(--ease);
+}
+
+.toast.is-on {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ---------- 6. 断点追加 ---------- */
+@media (min-width: 640px) {
+  .tier-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .use-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 4px 18px;
+  }
+
+  .use-flag {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    justify-self: end;
+    margin-top: 2px;
+  }
+}
+
+@media (min-width: 900px) {
+  .lab-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 40px;
+  }
+
+  .tiers {
+    grid-template-columns: 1fr;
+  }
+
+  .legal-toc {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 32px;
+  }
+
+  .swatches {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ==========================================================================
+   19. 留言簿（guestbook.html）
+   --------------------------------------------------------------------------
+   版式意图：像「门口的留言板」，不像评论区。
+   · 每条留言之间只用一条发丝线分隔，不套卡片、不加阴影 —— 留言多的时候，
+     一堆卡片会变成视觉噪音，细线反而更像「一页纸上的手写记录」。
+   · 左侧方牌只放称呼的第一个字，用衬线字体承担「编号/年份」那点旧气质，
+     与站内其他编号保持一致。
+   · 检索栏和标签条在同一行：窄屏自动折成上下两行，搜索框永远占满宽度。
+   · 「仅本机可见」这个标记只用朱砂细边框，不做底色 —— 它是个提示，不是警报。
+   · 所有评论性质的说明（隐私、边界）放在正文旁边，不塞进折叠面板：
+     这类话如果要点开才看得到，等于没写。
+   ========================================================================== */
+
+/* ---------- 19.1 检索工具条 ---------- */
+.gb-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 28px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.gb-search {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 300px;
+  min-width: 0; /* 不加这句，长英文会把 flex 子项撑出视口 */
+}
+
+/* 复用 .field 的视觉语言，但这里是工具条里的紧凑版本 */
+.gb-search input[type="search"] {
+  width: 100%;
+  padding: 11px 13px;
+  font-family: var(--sans);
+  font-size: 16px; /* 触屏上小于 16px 会触发自动放大 */
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.gb-search input[type="search"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.gb-search input[type="search"]::placeholder {
+  color: var(--ink);
+  opacity: 0.42;
+}
+
+.gb-count {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  opacity: 0.58;
+}
+
+.gb-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ---------- 19.2 列表 ---------- */
+.gb-list {
+  display: block;
+  margin-top: 6px;
+}
+
+.gb-card {
+  padding: 22px 0 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* 第一条不留额外上边距，让列表紧接工具条 */
+.gb-card:first-child {
+  padding-top: 26px;
+}
+
+.gb-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+}
+
+.gb-mark {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  font-family: var(--fig);
+  font-size: 19px;
+  line-height: 1;
+  color: var(--accent);
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  /* 方牌不做底色：留白本身就是版式的一部分 */
+}
+
+.gb-id {
+  min-width: 0; /* 允许长昵称在窄屏折行 */
+}
+
+.gb-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.gb-role {
+  font-weight: 400;
+  font-size: 13px;
+  opacity: 0.6;
+  white-space: normal;
+}
+
+.gb-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin: 6px 0 0;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  opacity: 0.62;
+}
+
+.gb-badge {
+  padding: 1px 6px;
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  opacity: 1; /* 抵消 .gb-meta 的整体降透明，标记要清楚 */
+}
+
+.gb-text {
+  margin: 12px 0 0;
+  max-width: 66ch; /* 中文按视觉宽度折算，约 33 个全角字，读起来不累 */
+  font-size: 15.5px;
+  line-height: 1.8;
+  text-wrap: pretty;
+}
+
+.gb-empty {
+  margin: 0;
+  padding: 44px 0;
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.62;
+  border-bottom: 1px solid var(--line);
+}
+
+.gb-hint {
+  margin: 16px 0 0;
+  font-size: 11.5px;
+  line-height: 1.8;
+  opacity: 0.5;
+}
+
+/* ---------- 19.3 写留言 ---------- */
+.gb-write-grid {
+  display: grid;
+  gap: clamp(24px, 4vw, 44px);
+  grid-template-columns: 1fr; /* 窄屏先设计，宽屏在下面的断点里加列 */
+}
+
+.gb-row {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+.gb-counter-line {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 18px; /* 固定高度，避免字数变化时表单跳动 */
+}
+
+.gb-counter {
+  margin: 0;
+  font-size: 11.5px;
+  opacity: 0.55;
+  white-space: nowrap;
+}
+
+.gb-counter.is-over {
+  color: var(--accent);
+  opacity: 1;
+}
+
+.gb-feedback {
+  margin: 0;
+  padding: 0;
+  font-size: 13.5px;
+  line-height: 1.75;
+  display: none;
+}
+
+/* 提交后的反馈：左侧一条青绿细线，不用整块底色（避免和错误提示混淆） */
+.gb-feedback.is-on {
+  display: block;
+  padding: 12px 0 12px 13px;
+  border-left: 2px solid var(--jade);
+  opacity: 0.9;
+}
+
+.gb-aside {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+/* ---------- 19.4 导出与并入 ---------- */
+.gb-publish-grid {
+  display: grid;
+  gap: clamp(24px, 4vw, 36px);
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+.gb-steps {
+  counter-reset: gb-step;
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+}
+
+.gb-steps > li {
+  counter-increment: gb-step;
+  position: relative;
+  padding: 0 0 18px 34px;
+  border-left: 1px solid var(--line);
+}
+
+/* 序号用衬线字体，和站内其他编号同一套语汇 */
+.gb-steps > li::before {
+  content: counter(gb-step, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 34px;
+  padding-right: 8px;
+  font-family: var(--fig);
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--accent);
+  background: var(--paper);
+  text-align: center;
+}
+
+/* 轴线穿过序号太多会显脏，这里让左侧线只做分段感：用 gap 断开 */
+.gb-steps > li:not(:last-child) {
+  margin-bottom: 2px;
+}
+
+.gb-steps b {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.gb-steps p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.75;
+  opacity: 0.82;
+}
+
+.gb-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* JSON 预览：等宽、可折行、限高滚动，避免把页面拉长 */
+#gb-output {
+  max-height: 320px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.callout--wide {
+  margin-top: 30px;
+}
+
+.gb-compare {
+  display: grid;
+  gap: 16px;
+  margin-top: 22px;
+  grid-template-columns: 1fr;
+}
+
+/* ---------- 19.5 断点 ---------- */
+@media (min-width: 640px) {
+  .gb-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gb-toolbar {
+    align-items: center;
+  }
+}
+
+@media (min-width: 900px) {
+  .gb-write-grid {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  }
+
+  .gb-publish-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .gb-compare {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* 深色主题：方牌与徽标的线要提亮，否则在深底上会「消失」 */
+[data-theme="dark"] .gb-mark {
+  border-color: var(--line-strong);
+}
+
+[data-theme="dark"] .gb-badge {
+  border-color: var(--accent);
+}
+/* ---------- 20. 首页的留言簿入口 ----------
+   首页原本只有抽屉和页脚能进留言簿，实测「入口不明显」。
+   这一条是横贯版心的两栏带：左边一句说明，右边两个入口。
+   900px 以下堆成上下两行，按钮自动换到说明下面。 */
+.gb-teaser {
+  display: grid;
+  gap: 22px;
+  padding-block: clamp(26px, 4vw, 40px);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.gb-teaser-text h2 {
+  margin-top: 10px;
+  font-size: clamp(22px, 3vw, 30px);
+  line-height: 1.24;
+}
+
+.gb-teaser-text p {
+  margin-top: 10px;
+  max-width: 46em;
+  color: var(--ink-2);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.gb-teaser-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+}
+
+/* 宽屏时按钮贴右、与说明同一行底对齐 */
+@media (min-width: 900px) {
+  .gb-teaser {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    column-gap: 40px;
+  }
+
+  .gb-teaser-actions {
+    justify-content: flex-end;
+  }
+}

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<!--
+  ==============================================================================
+  index.html — 首页（个人定位 / 能力 / 精选项目 / 交付流程 / 合作方式）
+  ------------------------------------------------------------------------------
+  项目：CharmingLady 个人作品集站（纯静态，零框架、零外部依赖）
+  作者：CharmingLady · 许可：MIT
+  结构约定：
+    · 所有页面共享同一套页头与页脚，改导航时五个页面一起改
+    · 页面用 data-page 标记自身，core.js 据此高亮当前导航项
+    · 图片全部本地化在 assets/img/，不引用任何外部 CDN
+  ==============================================================================
+-->
+<html lang="zh-CN" data-theme="light">
+<head>
+  <script>document.documentElement.classList.add('js');</script>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CharmingLady — 前端 / 后端 / 小程序 全栈开发</title>
+  <meta name="description" content="CharmingLady，全栈开发者。做 Vue / React 前端、Node 与 Java 后端、微信与抖音小程序，从需求梳理到上线运维一人交付。">
+  <meta name="author" content="CharmingLady">
+  <!-- 移动端状态栏配色，深浅主题切换时由 core.js 同步更新 -->
+  <meta name="theme-color" content="#f4f3ed">
+
+  <!-- 社交分享卡片（og:image 上线后请改成绝对地址，否则部分平台抓不到图） -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CharmingLady — 全栈开发">
+  <meta property="og:description" content="前端 / 后端 / 小程序，一条需求从界面写到数据库。">
+  <meta property="og:image" content="assets/img/hero-desk.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/effects.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+
+  <!-- 全部脚本 defer 加载：不阻塞首屏渲染，执行顺序与书写顺序一致 -->
+  <script src="assets/js/core.js" defer></script>
+  <script src="assets/js/effects.js" defer></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+
+<body data-page="home">
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <!-- 光标光斑：effects.js 写入 transform，触屏设备不启用 -->
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <!-- ===== 页头（全站统一） ===== -->
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="index.html" aria-label="CharmingLady 首页">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M16 5.5v21M5.5 16h21" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="16" cy="16" r="3.2" fill="currentColor"/>
+        </svg>
+        <span class="brand-text">
+          <span class="brand-name">CharmingLady</span>
+          <span class="brand-sub">Frontend · Backend · Miniapp</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="主导航">
+        <a href="index.html" data-nav="home">首页</a>
+        <a href="pages/about.html" data-nav="about">关于</a>
+        <a href="pages/projects.html" data-nav="projects">项目</a>
+        <a href="pages/notes.html" data-nav="notes">笔记</a>
+        <a href="pages/services.html" data-nav="services">服务</a>
+        <a href="pages/guestbook.html" data-nav="guestbook">留言簿</a>
+        <a href="pages/contact.html" data-nav="contact">联系</a>
+      </nav>
+
+      <div class="header-tools">
+        <button class="theme-toggle mono" type="button" data-theme-toggle aria-pressed="false" aria-label="切换到深色主题">
+          <span data-theme-label>深色</span>
+        </button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-drawer" aria-label="打开导航菜单">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 移动端抽屉导航：与页头导航同源，内容更全（含次要页面与邮箱） -->
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="index.html">首页 <span>01</span></a>
+    <a href="pages/about.html">关于 <span>02</span></a>
+    <a href="pages/projects.html">项目 <span>03</span></a>
+    <a href="pages/notes.html">笔记 <span>04</span></a>
+    <a href="pages/services.html">服务与合作 <span>05</span></a>
+    <a href="pages/lab.html">实验台 <span>06</span></a>
+    <a href="pages/faq.html">常见问题 <span>07</span></a>
+    <a href="pages/guestbook.html">留言簿 <span>08</span></a>
+    <a href="pages/uses.html">装备与工具 <span>09</span></a>
+    <a href="pages/colophon.html">站点说明 <span>10</span></a>
+    <a href="pages/contact.html">联系 <span>11</span></a>
+    <a href="pages/disclaimer.html">免责声明 <span>12</span></a>
+    <a href="mailto:hi@charminglady.dev">hi@charminglady.dev <span>→</span></a>
+  </div>
+
+  <main id="main">
+    <!-- ===== 首屏 ===== -->
+    <section class="hero">
+      <div class="hero-orbs" aria-hidden="true"><i class="orb"></i><i class="orb"></i><i class="orb"></i></div>
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow" data-enter="1">全栈开发 · 北京 · 可远程协作</p>
+          <h1 class="hero-name" data-enter="2">Charming<em>Lady</em></h1>
+
+          <!-- 打字机：文案来源 data-type-items，用 | 分隔；读屏只读 sr-only 的完整描述 -->
+          <p class="hero-role" data-enter="3">
+            <span data-typewriter data-type-items="前端工程师 · Vue 3 / React / TypeScript|后端工程师 · Node.js / Java / MySQL|小程序开发 · 微信 / 抖音 / 支付宝|全栈交付 · 从需求梳理到上线运维"></span><i class="caret" aria-hidden="true"></i>
+            <span class="sr-only">前端 / 后端 / 小程序 全栈开发</span>
+          </p>
+
+          <p class="hero-lead" data-enter="4">
+            我是 CharmingLady。做前端时先想后端怎么扛，写接口时先想界面怎么用——
+            所以交付的不是「页面 + 接口」的拼接，而是一套别人也接得住的系统。
+          </p>
+
+          <div class="hero-actions" data-enter="5">
+            <a class="btn" href="pages/projects.html" data-magnetic>看看做过什么</a>
+            <a class="btn btn--ghost" href="pages/contact.html" data-magnetic>说一个需求</a>
+          </div>
+
+          <div class="hero-meta" data-enter="6">
+            <span class="status"><i></i>接单中</span>
+            <span>坐标 · 北京 / 远程</span>
+            <span>经验 · 7 年</span>
+            <span>响应 · 24 小时内</span>
+          </div>
+        </div>
+
+        <!-- 右栏：一段「把简历写成代码」的展示，比纯文字更能说明技术取向 -->
+        <aside class="hero-panel" data-enter="2">
+          <div class="code-window">
+            <div class="code-bar"><i></i><i></i><i></i><span>profile.ts</span></div>
+            <div class="code-body"><span class="c">// 用一个对象说清我是谁</span>
+<span class="k">const</span> <span class="v">charminglady</span> = {
+  <span class="k">role</span>: <span class="s">"全栈开发"</span>,
+  <span class="k">front</span>: [<span class="s">"Vue 3"</span>, <span class="s">"React"</span>, <span class="s">"TypeScript"</span>],
+  <span class="k">back</span>: [<span class="s">"Node.js"</span>, <span class="s">"NestJS"</span>, <span class="s">"Java"</span>],
+  <span class="k">mini</span>: [<span class="s">"微信小程序"</span>, <span class="s">"uni-app"</span>],
+  <span class="k">since</span>: <span class="v">2019</span>,
+  <span class="k">city</span>: <span class="s">"北京 · 可远程"</span>,
+  <span class="k">now</span>: <span class="s">"同时接 2 个长期合作"</span>
+};</div>
+          </div>
+          <div class="status"><i></i> 本周排期：1 个空档</div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===== 数据带：进入视口后数字滚动 ===== -->
+    <section class="section--tight">
+      <div class="shell">
+        <div class="stats">
+          <div>
+            <p class="stat-num"><span data-count="7">7</span><small>年</small></p>
+            <p class="stat-label">从 2019 年开始写生产代码</p>
+          </div>
+          <div>
+            <p class="stat-num"><span data-count="46">46</span><small>+</small></p>
+            <p class="stat-label">已交付的网站、后台与小程序</p>
+          </div>
+          <div>
+            <p class="stat-num"><span data-count="3">3</span><small>条</small></p>
+            <p class="stat-label">Web / 小程序 / 服务端技术线</p>
+          </div>
+          <div>
+            <p class="stat-num"><span data-count="12">12</span><small>个</small></p>
+            <p class="stat-label">维护中的开源仓库</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 能力：三栏 ===== -->
+    <section class="section" id="capability">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">能力边界</p>
+            <h2>一条需求，从界面写到数据库</h2>
+          </div>
+          <p class="section-note">三块能力不是并列的技能点，而是一条链：界面怎么用，决定接口怎么设计。</p>
+        </div>
+
+        <div class="grid-3">
+          <article class="service" data-reveal>
+            <p class="service-index">01 / FRONTEND</p>
+            <h3>前端：把设计做成能维护的代码</h3>
+            <p>组件拆得开、状态说得清、样式不打架。性能不是上线后再优化，而是从结构上就留好余地。</p>
+            <ul>
+              <li><span class="mono">Vue 3 / React</span> 组件化与状态管理，按业务复杂度选型</li>
+              <li><span class="mono">TypeScript</span> 类型收口，改需求时先被编译器提醒</li>
+              <li><span class="mono">Vite</span> 构建拆分，首屏只加载首屏需要的</li>
+              <li>设计还原：栅格、断点、字号层级一次对齐</li>
+            </ul>
+          </article>
+
+          <article class="service" data-reveal data-delay="80">
+            <p class="service-index">02 / BACKEND</p>
+            <h3>后端：让接口扛得住，也让别人读得懂</h3>
+            <p>接口是给未来的同事看的文档。字段命名、错误码、分页与幂等，在写第一个接口时就要定下来。</p>
+            <ul>
+              <li><span class="mono">Node.js / NestJS</span> 分层结构与参数校验</li>
+              <li><span class="mono">Java / Spring Boot</span> 事务边界与并发控制</li>
+              <li><span class="mono">MySQL / Redis</span> 索引、缓存与一致性</li>
+              <li>鉴权、限流、日志与告警一套接上</li>
+            </ul>
+          </article>
+
+          <article class="service" data-reveal data-delay="160">
+            <p class="service-index">03 / MINIAPP</p>
+            <h3>小程序：短路径，少一步就多一成转化</h3>
+            <p>小程序不是「缩小版网页」。分包、授权、支付回调，每一处都直接影响能不能过审、能不能付款。</p>
+            <ul>
+              <li><span class="mono">原生 / uni-app / Taro</span> 按发布节奏选方案</li>
+              <li>登录态、手机号、微信支付与退款链路</li>
+              <li>分包加载、骨架屏、下拉刷新与分享卡片</li>
+              <li>类目、隐私协议、内容安全接口合规</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 技术栈跑马灯（两行反向，悬停暂停） ===== -->
+    <section class="section--tight" aria-label="常用技术栈">
+      <div class="shell">
+        <p class="eyebrow eyebrow--mb">每天都在用的东西</p>
+      </div>
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <span class="marquee-item"><i></i>Vue 3</span><span class="marquee-item"><i></i>React 18</span>
+          <span class="marquee-item"><i></i>TypeScript</span><span class="marquee-item"><i></i>Vite</span>
+          <span class="marquee-item"><i></i>Pinia</span><span class="marquee-item"><i></i>Node.js</span>
+          <span class="marquee-item"><i></i>NestJS</span><span class="marquee-item"><i></i>Java</span>
+          <span class="marquee-item"><i></i>Spring Boot</span><span class="marquee-item"><i></i>MySQL</span>
+          <span class="marquee-item"><i></i>Redis</span><span class="marquee-item"><i></i>Docker</span>
+          <!-- 复制一份用于无缝滚动：translateX(-50%) 后首尾相接 -->
+          <span class="marquee-item"><i></i>Vue 3</span><span class="marquee-item"><i></i>React 18</span>
+          <span class="marquee-item"><i></i>TypeScript</span><span class="marquee-item"><i></i>Vite</span>
+          <span class="marquee-item"><i></i>Pinia</span><span class="marquee-item"><i></i>Node.js</span>
+          <span class="marquee-item"><i></i>NestJS</span><span class="marquee-item"><i></i>Java</span>
+          <span class="marquee-item"><i></i>Spring Boot</span><span class="marquee-item"><i></i>MySQL</span>
+          <span class="marquee-item"><i></i>Redis</span><span class="marquee-item"><i></i>Docker</span>
+        </div>
+      </div>
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track marquee-track--rev">
+          <span class="marquee-item"><i></i>微信小程序</span><span class="marquee-item"><i></i>uni-app</span>
+          <span class="marquee-item"><i></i>Taro</span><span class="marquee-item"><i></i>微信支付</span>
+          <span class="marquee-item"><i></i>Nginx</span><span class="marquee-item"><i></i>GitHub Actions</span>
+          <span class="marquee-item"><i></i>Figma</span><span class="marquee-item"><i></i>Fiddler</span>
+          <span class="marquee-item"><i></i>Postman</span><span class="marquee-item"><i></i>Linux</span>
+          <span class="marquee-item"><i></i>微信小程序</span><span class="marquee-item"><i></i>uni-app</span>
+          <span class="marquee-item"><i></i>Taro</span><span class="marquee-item"><i></i>微信支付</span>
+          <span class="marquee-item"><i></i>Nginx</span><span class="marquee-item"><i></i>GitHub Actions</span>
+          <span class="marquee-item"><i></i>Figma</span><span class="marquee-item"><i></i>Fiddler</span>
+          <span class="marquee-item"><i></i>Postman</span><span class="marquee-item"><i></i>Linux</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 精选项目 ===== -->
+    <section class="section" id="work">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">精选</p>
+            <h2>三个能说明问题的项目</h2>
+          </div>
+          <p class="section-note">不挑最好看的，挑最能说明「怎么解决问题」的。<a class="link-more" href="pages/projects.html">全部 6 个 →</a></p>
+        </div>
+
+        <div class="grid-cases">
+          <a class="case tilt" href="pages/projects.html#case-shiguang" data-reveal>
+            <figure class="case-figure">
+              <span class="case-no">01</span>
+              <img src="assets/img/proj-miniapp.jpg" alt="拾光书店小程序界面示意" width="1200" height="900" loading="lazy">
+            </figure>
+            <div class="case-head"><h3>「拾光」书店小程序</h3><span class="case-year">2025</span></div>
+            <p class="case-sub">微信小程序 · 线上选书 + 到店自提</p>
+            <div class="tag-row"><span class="tag">小程序</span><span class="tag">Node.js</span><span class="tag">微信支付</span></div>
+          </a>
+
+          <a class="case tilt" href="pages/projects.html#case-yunshu" data-reveal data-delay="80">
+            <figure class="case-figure">
+              <span class="case-no">02</span>
+              <img src="assets/img/proj-editor.jpg" alt="云枢管理后台代码与界面示意" width="1200" height="900" loading="lazy">
+            </figure>
+            <div class="case-head"><h3>「云枢」多端管理后台</h3><span class="case-year">2025</span></div>
+            <p class="case-sub">Web 端 + 移动端 + 权限体系</p>
+            <div class="tag-row"><span class="tag">全栈</span><span class="tag">Vue 3</span><span class="tag">Spring Boot</span></div>
+          </a>
+
+          <a class="case tilt" href="pages/projects.html#case-hetu" data-reveal data-delay="160">
+            <figure class="case-figure">
+              <span class="case-no">03</span>
+              <img src="assets/img/proj-dashboard.jpg" alt="河图运营数据大屏示意" width="1200" height="900" loading="lazy">
+            </figure>
+            <div class="case-head"><h3>「河图」运营数据看板</h3><span class="case-year">2024</span></div>
+            <p class="case-sub">8 块指标，刷新延迟压到 200ms 内</p>
+            <div class="tag-row"><span class="tag">前端</span><span class="tag">可视化</span><span class="tag">Redis</span></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 交付流程（时间轴） ===== -->
+    <section class="section" id="process">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">怎么合作</p>
+            <h2>四步，每步都有交付物</h2>
+          </div>
+          <p class="section-note">不给「先做一版看看」这种无法验收的承诺，每一步结束你都能看到东西。</p>
+        </div>
+
+        <div class="tl">
+          <div class="tl-item" data-reveal>
+            <div class="tl-year">01</div>
+            <div class="tl-axis"></div>
+            <div class="tl-body">
+              <h3>需求澄清 · 1–3 天</h3>
+              <p>把「想要高级一点」翻译成可验收的条目：谁用、多久用一次、什么算完成。输出一份需求清单，双方确认后才动手。</p>
+              <span class="mono">交付物：需求清单 + 范围确认</span>
+            </div>
+          </div>
+
+          <div class="tl-item" data-reveal>
+            <div class="tl-year">02</div>
+            <div class="tl-axis"></div>
+            <div class="tl-body">
+              <h3>方案与拆解 · 3–5 天</h3>
+              <p>先定页面结构、数据模型与接口清单，再出可点的原型。原型阶段改一次，比开发阶段改十次便宜。</p>
+              <span class="mono">交付物：原型 + 接口草案 + 排期</span>
+            </div>
+          </div>
+
+          <div class="tl-item" data-reveal>
+            <div class="tl-year">03</div>
+            <div class="tl-axis"></div>
+            <div class="tl-body">
+              <h3>开发与联调 · 2–6 周</h3>
+              <p>小步提交，每周一个能跑起来的版本。你随时能在测试环境里点到最新进度，不用等到最后一天。</p>
+              <span class="mono">交付物：可访问的测试环境 + 每周进度</span>
+            </div>
+          </div>
+
+          <div class="tl-item" data-reveal>
+            <div class="tl-year">04</div>
+            <div class="tl-axis"></div>
+            <div class="tl-body">
+              <h3>上线与交接 · 3–7 天</h3>
+              <p>部署、监控、备份策略一起交付，附操作手册与录屏。上线后 30 天内的问题免费处理。</p>
+              <span class="mono">交付物：线上环境 + 文档 + 录屏 + 30 天维护</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 评价 ===== -->
+    <section class="section" id="words">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">合作方怎么说</p>
+            <h2>三句实话</h2>
+          </div>
+          <p class="section-note">按项目类型挑了三条，没有挑最好听的。</p>
+        </div>
+
+        <div class="grid-3">
+          <blockquote class="quote" data-reveal>
+            <p>「他动手前先问了一句『这个功能谁用、多久用一次』，这句话直接省掉了我们两个页面。」</p>
+            <footer>— 拾光书店 · 店主</footer>
+          </blockquote>
+          <blockquote class="quote" data-reveal data-delay="80">
+            <p>「上线那周遇到并发问题，凌晨两点还在群里同步进展，第二天就给了复盘文档。」</p>
+            <footer>— 云枢 · 项目负责人</footer>
+          </blockquote>
+          <blockquote class="quote" data-reveal data-delay="160">
+            <p>「交付文档写得比我们内部的还清楚，后来接手的人一周就上手了。」</p>
+            <footer>— 河图 · 运营总监</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 留言簿入口 =====
+         为什么要在这里放一条：留言簿只挂在抽屉和页脚里时，从首页基本看不到入口。
+         这一段是全站唯一的「留言」入口，做完就该能被点到。 -->
+    <section class="section">
+      <div class="shell gb-teaser" data-reveal="rise">
+        <div class="gb-teaser-text">
+          <p class="eyebrow">留言簿 · 可检索 · 长期保存</p>
+          <h2>有话不想写邮件？去留言簿留一句。</h2>
+          <p>写下来就会被后来的访客搜到：称呼、身份、城市、正文都能搜，标签还能再筛一层。种子留言写在源码里，跟着站点一起部署，所以别人看得见、也留得住。</p>
+        </div>
+        <div class="gb-teaser-actions">
+          <a class="btn" href="pages/guestbook.html" data-magnetic>去留言簿</a>
+          <a class="link-more" href="pages/guestbook.html#gb-write">直接写一条</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 深色 CTA ===== -->
+    <section class="section section--dark">
+      <div class="shell cta">
+        <div>
+          <p class="eyebrow">下一步</p>
+          <h2>有一个说不清的想法？先聊十分钟也行。</h2>
+          <p>把现状、想要的结果、时间点写给我，我回一封带判断的邮件，而不是一句「可以，详聊」。</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn" href="pages/contact.html" data-magnetic>写信给我</a>
+          <a class="btn btn--ghost" href="pages/about.html" data-magnetic>先看看我是谁</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== 页脚（全站统一） ===== -->
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="brand-name brand-name--lg">CharmingLady</p>
+          <p>前端 / 后端 / 小程序，一人交付。这个站点本身也是一件作品：纯静态、零依赖、断网可开。</p>
+        </div>
+
+        <div class="footer-col">
+          <h3>站点</h3>
+          <ul>
+            <li><a href="index.html">首页</a></li>
+            <li><a href="pages/about.html">关于</a></li>
+            <li><a href="pages/projects.html">项目</a></li>
+            <li><a href="pages/notes.html">笔记</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>更多</h3>
+          <ul>
+            <li><a href="pages/services.html">服务与合作</a></li>
+            <li><a href="pages/lab.html">实验台</a></li>
+            <li><a href="pages/faq.html">常见问题</a></li>
+            <li><a href="pages/guestbook.html">留言簿</a></li>
+            <li><a href="pages/uses.html">装备与工具</a></li>
+            <li><a href="pages/colophon.html">站点说明</a></li>
+            <li><a href="pages/disclaimer.html">免责声明</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>联系</h3>
+          <ul>
+            <li><a href="mailto:hi@charminglady.dev">hi@charminglady.dev</a></li>
+            <li><a href="pages/contact.html">表单 / 微信 / 电话</a></li>
+            <li><span class="mono">北京 · UTC+8</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> CharmingLady · 代码 MIT，文字与图片 CC BY-NC 4.0</span>
+        <span>本站为演示性质作品集，内容与数据说明见<a class="link-more" href="pages/disclaimer.html">免责声明</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <button class="to-top" type="button" aria-label="回到顶部">↑</button>
+</body>
+</html>

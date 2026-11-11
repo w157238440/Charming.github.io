@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<!--
+  ==============================================================================
+  guestbook.html — 留言簿（本地存储 + 源码种子，可检索）
+  ------------------------------------------------------------------------------
+  这一页要回答的问题：「别人留言，我能不能看到？能不能长期留着？」
+
+  诚实的答案是：纯静态站点没有后端，任何人写的内容都无法自动出现在别人眼前。
+  所以这一页拆成两层，并把边界讲清楚：
+
+    ① 种子层 —— assets/js/guestbook.js 顶部的 SEED 数组。
+       留言写在源码里、随站点一起部署，所有访客都能看到，换设备也不丢。
+    ② 本机层 —— 访客当场写的留言存在 localStorage（键名 cl-guestbook-v2）。
+       立刻可见、刷新还在，但只在这台设备这个浏览器里；
+       要变成「所有人都能看到」，需导出 JSON 并入 SEED 再提交一次代码（本页有步骤）。
+
+  检索：关键词（称呼 / 身份 / 城市 / 标签 / 正文 / 日期）+ 标签筛选，双重条件取交集。
+
+  安全：所有用户输入只用 textContent 渲染，禁止 innerHTML —— 留言是陌生内容，
+  拼字符串进页面等于自己开一个 XSS 口子。这条写进 assets/js/guestbook.js 的注释里。
+
+  依赖：core.js（工具与主题）、effects.js（揭示动效）、ui.js（本例未用手风琴但保留
+  一致性）、guestbook.js（本页逻辑）。全部本地文件，无外部 CDN。
+  ==============================================================================
+-->
+<html lang="zh-CN" data-theme="light">
+<head>
+  <script>document.documentElement.classList.add('js');</script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>留言簿 — CharmingLady</title>
+  <meta name="description" content="一个纯静态的留言簿：预置示例留言所有人都能看到，你当场写的留言存在本机浏览器，可导出并入源码变成正式留言。支持关键词检索与标签筛选。">
+  <meta name="author" content="CharmingLady">
+  <meta name="theme-color" content="#f4f3ed">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="留言簿 — CharmingLady">
+  <meta property="og:description" content="留言、检索、导出，一个没有后端的留言簿可以做到哪一步。">
+
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/effects.css">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+
+  <script src="../assets/js/core.js" defer></script>
+  <script src="../assets/js/effects.js" defer></script>
+  <script src="../assets/js/ui.js" defer></script>
+  <script src="../assets/js/guestbook.js" defer></script>
+</head>
+<body data-page="guestbook">
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="../index.html" aria-label="CharmingLady 首页">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M16 5.5v21M5.5 16h21" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="16" cy="16" r="3.2" fill="currentColor"/>
+        </svg>
+        <span class="brand-text">
+          <span class="brand-name">CharmingLady</span>
+          <span class="brand-sub">Frontend · Backend · Miniapp</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="主导航">
+        <a href="../index.html" data-nav="home">首页</a>
+        <a href="about.html" data-nav="about">关于</a>
+        <a href="projects.html" data-nav="projects">项目</a>
+        <a href="notes.html" data-nav="notes">笔记</a>
+        <a href="services.html" data-nav="services">服务</a>
+        <a href="guestbook.html" data-nav="guestbook">留言簿</a>
+        <a href="contact.html" data-nav="contact">联系</a>
+      </nav>
+
+      <div class="header-tools">
+        <button class="theme-toggle mono" type="button" data-theme-toggle aria-pressed="false" aria-label="切换到深色主题">
+          <span data-theme-label>深色</span>
+        </button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-drawer" aria-label="打开导航菜单">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 移动端抽屉导航：与页头导航同源，内容更全（含次要页面与邮箱） -->
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="../index.html">首页 <span>01</span></a>
+    <a href="about.html">关于 <span>02</span></a>
+    <a href="projects.html">项目 <span>03</span></a>
+    <a href="notes.html">笔记 <span>04</span></a>
+    <a href="services.html">服务与合作 <span>05</span></a>
+    <a href="lab.html">实验台 <span>06</span></a>
+    <a href="faq.html">常见问题 <span>07</span></a>
+    <a href="guestbook.html">留言簿 <span>08</span></a>
+    <a href="uses.html">装备与工具 <span>09</span></a>
+    <a href="colophon.html">站点说明 <span>10</span></a>
+    <a href="contact.html">联系 <span>11</span></a>
+    <a href="disclaimer.html">免责声明 <span>12</span></a>
+    <a href="mailto:hi@charminglady.dev">hi@charminglady.dev <span>→</span></a>
+  </div>
+
+  <main id="main">
+    <!-- ===== 页头 ===== -->
+    <section class="shell page-head">
+      <p class="eyebrow">留言簿 · 本地保存 · 可检索</p>
+      <h1 data-split>留一句话，比点个赞更具体。</h1>
+      <p class="lead">
+        这里没有后端。预置的示例留言写在源码里，所有访客都能看到；你当场写的那条会先存在
+        你自己的浏览器里，想让它出现在所有人眼前，导出 JSON 并入源码再提交一次即可。
+        下面把这条路一步一步写清了，也包括它做不到什么。
+      </p>
+      <p class="page-meta mono">存储 · 源码种子 + localStorage ｜ 检索 · 关键词 + 标签 ｜ 上限 · 本机 200 条 / 单条 300 字</p>
+    </section>
+
+    <!-- ===== 一、检索与列表 ===== -->
+    <section class="section" id="gb-list-head">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">01 · 读留言</p>
+            <h2>先看看别人写了什么。</h2>
+          </div>
+          <p class="section-note">关键词会同时匹配称呼、身份、城市、标签、正文与日期；再叠一层标签筛选，两个条件是「并且」的关系。</p>
+        </div>
+
+        <div class="gb-toolbar" data-reveal>
+          <div class="gb-search">
+            <label class="sr-only" for="gb-search">检索留言</label>
+            <input type="search" id="gb-search" placeholder="搜称呼、城市、关键词，或直接搜「小程序」" autocomplete="off">
+            <p class="gb-count mono" id="gb-count" role="status" aria-live="polite">正在统计…</p>
+          </div>
+
+          <div class="gb-tags" role="group" aria-label="按标签筛选">
+            <button class="chip" type="button" data-gb-tag="全部" aria-pressed="true">全部</button>
+            <button class="chip" type="button" data-gb-tag="合作过" aria-pressed="false">合作过</button>
+            <button class="chip" type="button" data-gb-tag="技术交流" aria-pressed="false">技术交流</button>
+            <button class="chip" type="button" data-gb-tag="建议" aria-pressed="false">建议</button>
+            <button class="chip" type="button" data-gb-tag="闲话" aria-pressed="false">闲话</button>
+          </div>
+        </div>
+
+        <div class="gb-list" id="gb-list" aria-live="polite">
+          <!-- 留言由 guestbook.js 渲染；这里留空，避免「脚本没跑也显示假内容」 -->
+        </div>
+
+        <p class="gb-empty" id="gb-empty" hidden>正在载入留言…</p>
+
+        <p class="gb-hint mono">
+          提示：按 Esc 可清空检索框；标着「仅本机可见」的条目只存在于当前浏览器，别人看不到。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== 二、写一条 ===== -->
+    <section class="section" id="gb-write">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">02 · 写留言</p>
+            <h2>说具体一点，留言才有价值。</h2>
+          </div>
+          <p class="section-note">「很棒」这类话对我没有帮助；「哪个页面的哪一段让你卡住了」「哪个决定你不同意」，才是能改的东西。</p>
+        </div>
+
+        <div class="gb-write-grid">
+          <form class="form" id="gb-form" novalidate>
+            <div class="gb-row">
+              <div class="field" id="gb-name-field">
+                <label for="gb-name">怎么称呼你 <span class="req">*</span></label>
+                <input type="text" id="gb-name" name="gb-name" maxlength="16" placeholder="昵称也行，不用真名" autocomplete="nickname">
+                <p class="field-error" id="gb-name-error" role="alert"></p>
+              </div>
+
+              <div class="field" id="gb-role-field">
+                <label for="gb-role">身份（选填）</label>
+                <input type="text" id="gb-role" name="gb-role" maxlength="24" placeholder="前端 / 产品 / 店主 / 学生…">
+                <p class="field-error" id="gb-role-error" role="alert"></p>
+              </div>
+            </div>
+
+            <div class="gb-row">
+              <div class="field" id="gb-city-field">
+                <label for="gb-city">城市（选填）</label>
+                <input type="text" id="gb-city" name="gb-city" maxlength="12" placeholder="北京 / 杭州 / 广州…">
+                <p class="field-error" id="gb-city-error" role="alert"></p>
+              </div>
+
+              <div class="field" id="gb-tag-field">
+                <label for="gb-tag">留言类型</label>
+                <select id="gb-tag" name="gb-tag">
+                  <option value="闲话">闲话 · 随便聊两句</option>
+                  <option value="技术交流">技术交流 · 问实现或对写法</option>
+                  <option value="建议">建议 · 站点哪里可以更好</option>
+                  <option value="合作过">合作过 · 一起做过项目</option>
+                </select>
+                <p class="field-error" id="gb-tag-error" role="alert"></p>
+              </div>
+            </div>
+
+            <div class="field field--full" id="gb-text-field">
+              <label for="gb-text">留言 <span class="req">*</span></label>
+              <textarea id="gb-text" name="gb-text" maxlength="300" placeholder="五行以内最好。写清「哪里」「什么感受」「希望怎么改」，我会认真读。"></textarea>
+              <div class="gb-counter-line">
+                <p class="field-error" id="gb-text-error" role="alert"></p>
+                <p class="gb-counter mono" id="gb-counter">0 / 300</p>
+              </div>
+            </div>
+
+            <div class="form-foot">
+              <button class="btn" type="submit" data-magnetic>保存到本机留言簿</button>
+              <p class="form-note">
+                点击后不会上传到任何服务器：内容只写进你这台电脑的浏览器存储（localStorage）。
+                别在留言里写手机号、身份证、住址这类隐私——它虽然不联网，但会留在这台设备上。
+              </p>
+              <p class="gb-feedback" id="gb-feedback" role="status" aria-live="polite"></p>
+            </div>
+          </form>
+
+          <aside class="gb-aside" data-reveal data-delay="60">
+            <div class="panel">
+              <h3>这条留言现在在哪</h3>
+              <ul class="plain-list">
+                <li>〇 · 你按下按钮之前，它只在你输入框里</li>
+                <li>一 · 按下之后，进 localStorage，刷新还在</li>
+                <li>二 · 只有这台设备、这个浏览器看得到</li>
+                <li>三 · 导出 JSON 并入源码，才变成「所有人可见」</li>
+              </ul>
+            </div>
+
+            <div class="callout">
+              <b>隐私说明：</b>
+              本页不设账号、不埋点、不调用任何第三方接口。你写的称呼与城市只用于展示，
+              不做统计、不画像、不外传。想删除：用下面的「清空本机留言」，或清掉浏览器站点数据。
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 三、导出并并入 ===== -->
+    <section class="section" id="gb-publish">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">03 · 从「我能看到」到「所有人能看到」</p>
+            <h2>三步，把本机留言变成正式留言。</h2>
+          </div>
+          <p class="section-note">这一步需要你有这个仓库的提交权限；如果你只是访客，把导出的 JSON 发邮件给我也一样。</p>
+        </div>
+
+        <div class="gb-publish-grid">
+          <div data-reveal>
+            <ol class="gb-steps">
+              <li>
+                <b>导出</b>
+                <p>点下面的按钮下载 JSON，或直接复制到剪贴板。里面只有你本机新增的留言，不含种子条目。</p>
+              </li>
+              <li>
+                <b>并入源码</b>
+                <p>打开 <span class="mono">assets/js/guestbook.js</span>，把每条对象粘进文件顶部的 <span class="mono">SEED</span> 数组（数组里每一项就是一条留言）。</p>
+              </li>
+              <li>
+                <b>提交并等一分钟</b>
+                <p>提交后 GitHub Pages 会重新发布，一分钟内所有人都能在本页看到这条留言。它从此是「文件」，不再依赖任何人的浏览器。</p>
+              </li>
+            </ol>
+
+            <div class="gb-actions">
+              <button class="btn btn--sm" type="button" id="gb-export">下载 JSON</button>
+              <button class="btn btn--sm btn--ghost" type="button" id="gb-copy">复制 JSON</button>
+              <button class="btn btn--sm btn--ghost" type="button" id="gb-clear">清空本机留言</button>
+            </div>
+          </div>
+
+          <div class="code-window" data-reveal data-delay="60">
+            <div class="code-bar mono"><span>assets/js/guestbook.js</span><span>SEED</span></div>
+<pre class="code-body mono" id="gb-output">// 本机还没有留言。先在上面写一条，这里就会出现可以并入源码的 JSON。</pre>
+          </div>
+        </div>
+
+        <div class="callout callout--wide">
+          <b>为什么不直接做一个「大家都能写」的留言板？</b>
+          因为这需要服务端。纯静态站点（GitHub Pages）没有进程能接收请求、没有数据库能落盘；
+          任何在浏览器里做的「大家一起写」，最后都变成「各写各的」。下面这张表把三条路线摊开讲，
+          包括各自要付的代价——你可以据此判断该选哪条，而不是被一句「支持留言」糊过去。
+        </div>
+
+        <div class="gb-compare">
+          <div class="panel">
+            <h3>路线 A · 就是现在这一页</h3>
+            <dl class="kv">
+              <div class="kv-row"><dt>能做什么</dt><dd>所有人都能读；任何人能写；写的内容本机永久保存、可导出</dd></div>
+              <div class="kv-row"><dt>做不到</dt><dd>别人写的不会自动出现在你眼前，需要人工并入源码</dd></div>
+              <div class="kv-row"><dt>代价</dt><dd>维护者要偶尔合并一次；留言有延迟</dd></div>
+              <div class="kv-row"><dt>适合</dt><dd>个人站、作品集、流量不大但要「看着干净」的场景</dd></div>
+            </dl>
+          </div>
+
+          <div class="panel">
+            <h3>路线 B · 挂第三方评论组件</h3>
+            <dl class="kv">
+              <div class="kv-row"><dt>能做什么</dt><dd>真·多人可见、有审核、有登录态</dd></div>
+              <div class="kv-row"><dt>做不到</dt><dd>不再是「零外部依赖」；断网或对方服务挂掉，留言区直接空白</dd></div>
+              <div class="kv-row"><dt>代价</dt><dd>引入外部域名与脚本，隐私政策要一并改；国内访问未必稳定</dd></div>
+              <div class="kv-row"><dt>适合</dt><dd>内容型站点、能接受第三方依赖</dd></div>
+            </dl>
+          </div>
+
+          <div class="panel">
+            <h3>路线 C · 自己加后端</h3>
+            <dl class="kv">
+              <div class="kv-row"><dt>能做什么</dt><dd>即时多人可见、可管理、可反垃圾</dd></div>
+              <div class="kv-row"><dt>做不到</dt><dd>不再是纯静态；要服务器、数据库、备份、以及长期维护成本</dd></div>
+              <div class="kv-row"><dt>代价</dt><dd>钱和时间；还要处理内容审核与合规责任</dd></div>
+              <div class="kv-row"><dt>适合</dt><dd>有明确运营需求、留言量大的站点</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 四、边界与声明 ===== -->
+    <section class="section">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">04 · 边界与声明</p>
+            <h2>把做不到的写在明面上。</h2>
+          </div>
+          <p class="section-note">以下每一条都可以被验证：清缓存、换浏览器、断网，各试一次就知道我说的是不是实话。</p>
+        </div>
+
+        <ol class="legal">
+          <li>
+            <b>预置的 10 条留言是演示内容。</b>
+            人物、城市、项目细节均为虚构，用于展示版式与检索效果，不代表任何真实评价。
+          </li>
+          <li>
+            <b>本机留言不具跨设备能力。</b>
+            它存在你这台设备的 localStorage 里；换设备、换浏览器、清站点数据、用隐私模式，都会看不到。
+            我这边也看不到——没有任何上传通道。
+          </li>
+          <li>
+            <b>不做内容审核。</b>
+            本页没有审核队列，因为内容根本没有离开你的浏览器。并入源码时，我会人工读一遍再提交。
+          </li>
+          <li>
+            <b>不要写隐私与敏感信息。</b>
+            手机号、身份证号、住址、账号密码、他人隐私，一律不要写。留言会被存进浏览器，
+            导出后也可能被提交到公开仓库。
+          </li>
+          <li>
+            <b>不承诺回复。</b>
+            留言不等于工单。需要回复的，请走 <a href="contact.html">联系页</a>的表单或邮件；
+            留言簿更像门口的留言板，我一周看一次。
+          </li>
+          <li>
+            <b>存储可能被系统清理。</b>
+            浏览器的「清理缓存」「节省空间」策略可能连 localStorage 一起清掉，
+            这是浏览器行为，不是页面 bug。
+          </li>
+          <li>
+            <b>法律层面的整体声明见 <a href="disclaimer.html">免责声明</a>。</b>
+            本页只是它的一条具体应用：静态站点的能力边界、演示内容的性质、以及不构成任何承诺。
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===== CTA（深色收尾，与其他页一致） ===== -->
+    <section class="section section--dark">
+      <div class="shell cta">
+        <h2>留言簿适合留一句，项目适合坐下来聊。</h2>
+        <p>有具体需求、时间节点和预算区间，直接走联系页；只是想指正某个写法，写在这里就行。</p>
+        <div class="cta-actions">
+          <a class="btn" href="contact.html" data-magnetic>去联系页</a>
+          <a class="btn btn--ghost" href="colophon.html">看这个站怎么做出来的</a>
+        </div>
+        <p class="section-note">
+          本页留言为演示性内容；本站法律层面的整体声明见免责声明，能力边界见「03 · 从「我能看到」到「所有人能看到」」。
+        </p>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="brand-name brand-name--lg">CharmingLady</p>
+          <p>前端 / 后端 / 小程序，一人交付。这个站点本身也是一件作品：纯静态、零依赖、断网可开。</p>
+        </div>
+
+        <div class="footer-col">
+          <h3>站点</h3>
+          <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="about.html">关于</a></li>
+            <li><a href="projects.html">项目</a></li>
+            <li><a href="notes.html">笔记</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>更多</h3>
+          <ul>
+            <li><a href="services.html">服务与合作</a></li>
+            <li><a href="lab.html">实验台</a></li>
+            <li><a href="faq.html">常见问题</a></li>
+            <li><a href="guestbook.html">留言簿</a></li>
+            <li><a href="uses.html">装备与工具</a></li>
+            <li><a href="colophon.html">站点说明</a></li>
+            <li><a href="disclaimer.html">免责声明</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>联系</h3>
+          <ul>
+            <li><a href="mailto:hi@charminglady.dev">hi@charminglady.dev</a></li>
+            <li><a href="contact.html">表单 / 微信 / 电话</a></li>
+            <li><span class="mono">北京 · UTC+8</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> CharmingLady · 代码 MIT，文字与图片 CC BY-NC 4.0</span>
+        <span>本站为演示性质作品集，内容与数据说明见<a class="link-more" href="disclaimer.html">免责声明</a></span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

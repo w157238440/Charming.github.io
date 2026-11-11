@@ -1,0 +1,1193 @@
+/* ==============================================================================
+   components.css — 组件层（按钮 / 卡片 / 时间轴 / 弹层 / 表单 / 手风琴 …）
+   ------------------------------------------------------------------------------
+   说明：所有组件只依赖 base.css 的令牌，不写死颜色与尺寸；组件之间互不嵌套依赖，
+        便于单独替换。注释里标注了每个组件的交互来自哪个 JS 模块。
+   ============================================================================== */
+
+/* ---------- 1. 按钮 ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 22px;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+
+.btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* 幽灵按钮：描边款，用于次要动作 */
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+.btn--ghost:hover {
+  background: transparent;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* 小号：表格、卡片内的动作 */
+.btn--sm {
+  min-height: 38px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+/* 深色区块里的反色按钮由 .section--dark 的变量自动翻转，无需另写一套 */
+
+/* ---------- 2. 标签 / 筛选片 ---------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: transparent;
+  font-size: 13px;
+  color: var(--ink-2);
+  transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease),
+    background-color var(--t-fast) var(--ease);
+}
+
+.chip:hover {
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.chip[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.chip[aria-pressed="true"] .chip-count {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.chip-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* 项目卡 / 笔记卡上的小标签 */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.02em;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ---------- 3. 代码窗口（首屏右侧 & 关于页） ---------- */
+.code-window {
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  background: var(--ink);
+  color: #e7e6de;
+  overflow: hidden;
+  --line: rgba(244, 243, 237, 0.14);
+}
+
+.code-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(244, 243, 237, 0.55);
+}
+
+.code-bar i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(244, 243, 237, 0.28);
+}
+
+.code-bar i:nth-child(1) {
+  background: #a6402b;
+}
+
+.code-bar i:nth-child(2) {
+  background: #b98b3d;
+}
+
+.code-bar i:nth-child(3) {
+  background: #2f6f5e;
+}
+
+.code-bar span {
+  margin-left: 8px;
+}
+
+.code-body {
+  padding: 14px 16px 18px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.9;
+  white-space: pre;
+  overflow-x: auto;
+  tab-size: 2;
+}
+
+/* 极简高亮：只区分「键 / 值 / 注释 / 关键字」四类，不引入语法主题 */
+.code-body .k {
+  color: #c98a5a;
+}
+
+.code-body .s {
+  color: #7fb59f;
+}
+
+.code-body .c {
+  color: rgba(244, 243, 237, 0.42);
+}
+
+.code-body .v {
+  color: #d9d5c6;
+}
+
+/* 深色主题下代码窗口保持深色：它是「屏幕」的隐喻，不该跟着翻成纸白，
+   否则浅字压在浅底上，可读性会直接崩掉。 */
+[data-theme="dark"] .code-window {
+  background: #0f1714;
+  color: #e7e6de;
+  --line: rgba(244, 243, 237, 0.14);
+}
+
+/* ---------- 4. 能力块（首页「我能做什么」） ---------- */
+.service {
+  padding-top: 20px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.service-index {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.service h3 {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.service p {
+  margin-top: 10px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+
+.service ul {
+  margin-top: 16px;
+  display: block;
+}
+
+/* 列表项：这里**不能**用 grid 两列。
+   li 里的结构是「<span>标签</span> 说明文字」——文字是裸文本节点，
+   在 grid 里会被当成匿名 grid item 塞进第 1 列（12px 宽），
+   于是整段说明变成一列竖排单字（已在实机截图里复现并修复）。
+   改用「块级 + 绝对定位短横线 + 左内边距」，文本自然在同一行续写、按容器宽度折行。 */
+.service li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  text-wrap: pretty;
+}
+
+.service li + li {
+  margin-top: 7px;
+}
+
+.service li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.85em;
+  width: 5px;
+  height: 1px;
+  background: var(--line-strong);
+}
+
+.service .mono {
+  color: var(--ink-2);
+}
+
+/* ---------- 5. 项目卡 ---------- */
+.case {
+  display: block;
+  border-top: 1px solid var(--line-strong);
+  padding-top: 14px;
+  transition: color var(--t-base) var(--ease);
+}
+
+.case-figure {
+  position: relative;
+  overflow: hidden;
+  background: var(--paper-2);
+  aspect-ratio: 4 / 3;
+}
+
+.case-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--t-slow) var(--ease), filter var(--t-slow) var(--ease);
+  filter: saturate(0.92);
+}
+
+.case:hover .case-figure img {
+  transform: scale(1.035);
+  filter: saturate(1.05);
+}
+
+/* 序号：位于图片左上角，和标题行形成呼应 */
+.case-no {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--paper);
+  mix-blend-mode: difference;
+}
+
+.case-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.case h3 {
+  font-size: 16px;
+}
+
+.case-year {
+  font-family: var(--fig);
+  font-size: 13px;
+  color: var(--ink-3);
+  flex: none;
+}
+
+.case-sub {
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.case .tag-row {
+  margin-top: 12px;
+}
+
+.case[hidden] {
+  display: none;
+}
+
+/* ---------- 6. 时间轴（纵向，单列三栅格：年份 / 轴线 / 内容） ---------- */
+.tl {
+  display: grid;
+}
+
+.tl-item {
+  display: grid;
+  grid-template-columns: 52px 18px minmax(0, 1fr);
+  align-items: start;
+}
+
+.tl-year {
+  padding-top: 2px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.tl-axis {
+  position: relative;
+  height: 100%;
+}
+
+/* 轴线：贯穿整行（包括内容区下内边距），保证相邻两点之间没有断口 */
+.tl-axis::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 6px;
+  bottom: 0;
+  width: 1px;
+  background: var(--line);
+}
+
+/* 圆点中心与轴线中心严格对齐：line 在 8.5px，dot 左 4px + 宽 9px = 中心 8.5px */
+.tl-axis::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.tl-item:first-child .tl-axis::after {
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.tl-item:last-child .tl-axis::before {
+  bottom: auto;
+  height: 6px;
+}
+
+.tl-body {
+  padding-bottom: 30px;
+}
+
+.tl-body h3 {
+  font-size: 15px;
+}
+
+.tl-body p {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--ink-2);
+  max-width: 42em;
+}
+
+.tl-body .mono {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+/* ---------- 7. 能力进度条 ---------- */
+.meter {
+  display: grid;
+  gap: 6px;
+  padding-block: 10px;
+}
+
+.meter-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.meter-top b {
+  font-weight: 500;
+}
+
+.meter-top span {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+.meter-track {
+  height: 2px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  width: 0;
+  background: var(--ink);
+  transition: width 900ms var(--ease);
+}
+
+/* 由 effects.js 在区块进入视口时写入目标宽度 */
+.meter-fill.is-on {
+  width: var(--value, 0%);
+}
+
+/* ---------- 8. 评价 ---------- */
+.quote {
+  display: grid;
+  gap: 14px;
+  padding: 22px 0 0;
+  border-top: 1px solid var(--line-strong);
+}
+
+.quote p {
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.quote footer {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+/* ---------- 9. 深色 CTA ---------- */
+.cta {
+  display: grid;
+  gap: 20px;
+  align-items: start;
+}
+
+.cta h2 {
+  font-size: clamp(24px, 5vw, 40px);
+  max-width: 16em;
+}
+
+.cta p {
+  font-size: 14px;
+  color: var(--ink-2);
+  max-width: 32em;
+}
+
+/* ---------- 10. 技术栈跑马灯 ---------- */
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  gap: 0;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+
+.marquee-track--rev {
+  animation-direction: reverse;
+  animation-duration: 46s;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  border-right: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.marquee-item i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.6;
+}
+
+/* ---------- 11. 弹层（项目详情 / 笔记阅读） ---------- */
+.dialog {
+  width: min(720px, 92vw);
+  max-height: 86vh;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.dialog::backdrop {
+  background: rgba(9, 15, 12, 0.62);
+  backdrop-filter: blur(3px);
+}
+
+.dialog-inner {
+  padding: clamp(22px, 4vw, 38px);
+}
+
+.dialog-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.dialog-head h2 {
+  font-size: clamp(20px, 3.4vw, 26px);
+}
+
+.dialog-close {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-2);
+  transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+
+.dialog-close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.dialog-meta {
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+/* 详情里的键值表：左窄右宽，窄屏堆叠 */
+.kv {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.kv-row {
+  display: grid;
+  grid-template-columns: 68px minmax(0, 1fr);
+  gap: 12px;
+  font-size: 13px;
+}
+
+.kv-row dt {
+  color: var(--ink-3);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  padding-top: 2px;
+}
+
+.kv-row dd {
+  margin: 0;
+  color: var(--ink-2);
+}
+
+.dialog-body {
+  margin-top: 20px;
+  display: grid;
+  gap: 14px;
+}
+
+.dialog-body h3 {
+  font-size: 13px;
+  font-family: var(--mono);
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.dialog-body p {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+.dialog-foot {
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+/* 不支持 <dialog> 的旧浏览器：降级为普通可滚动面板 */
+.dialog.no-dialog {
+  position: fixed;
+  inset: 6vh 4vw auto;
+  z-index: 300;
+  transform: none;
+}
+
+/* ---------- 12. 表单 ---------- */
+.form {
+  display: grid;
+  gap: 20px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field label {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ink-3);
+  font-family: var(--mono);
+}
+
+.field label .req {
+  color: var(--accent);
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 2px;
+  border: 0;
+  border-bottom: 1px solid var(--line-strong);
+  border-radius: 0;
+  background: transparent;
+  font-size: 16px; /* 16px 起步，避免 iOS 聚焦时自动放大 */
+  color: var(--ink);
+  transition: border-color var(--t-fast) var(--ease);
+  appearance: none;
+}
+
+.field textarea {
+  min-height: 92px;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--ink-3);
+  opacity: 0.7;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-bottom-color: var(--accent);
+}
+
+.field.is-invalid input,
+.field.is-invalid select,
+.field.is-invalid textarea {
+  border-bottom-color: var(--accent);
+}
+
+.field-error {
+  font-size: 12px;
+  color: var(--accent);
+  min-height: 0;
+}
+
+/* 下拉箭头：自绘，避免各系统样式不一致 */
+.field select {
+  background-image: linear-gradient(45deg, transparent 49%, var(--ink-3) 50%),
+    linear-gradient(-45deg, transparent 49%, var(--ink-3) 50%);
+  background-position: calc(100% - 12px) 22px, calc(100% - 7px) 22px;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 26px;
+}
+
+.form-foot {
+  display: grid;
+  gap: 12px;
+}
+
+.form-note {
+  font-size: 12px;
+  color: var(--ink-3);
+  max-width: 34em;
+}
+
+/* 提交后的反馈面板（不真的发信，只生成邮件草稿） */
+.form-feedback {
+  display: none;
+  padding: 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  background: var(--paper-2);
+  font-size: 13px;
+}
+
+.form-feedback.is-on {
+  display: block;
+}
+
+.form-feedback b {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.form-feedback a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  word-break: break-all;
+}
+
+/* ---------- 13. 手风琴（FAQ） ---------- */
+.acc {
+  border-top: 1px solid var(--line);
+}
+
+.acc-item {
+  border-bottom: 1px solid var(--line);
+}
+
+.acc-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+  text-align: left;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.acc-btn i {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  position: relative;
+  transition: transform var(--t-base) var(--ease);
+}
+
+.acc-btn i::before,
+.acc-btn i::after {
+  content: "";
+  position: absolute;
+  background: var(--ink-3);
+}
+
+.acc-btn i::before {
+  left: 0;
+  top: 5px;
+  width: 12px;
+  height: 1.5px;
+}
+
+.acc-btn i::after {
+  left: 5px;
+  top: 0;
+  width: 1.5px;
+  height: 12px;
+  transition: opacity var(--t-fast) var(--ease);
+}
+
+.acc-btn[aria-expanded="true"] i {
+  transform: rotate(180deg);
+}
+
+.acc-btn[aria-expanded="true"] i::after {
+  opacity: 0;
+}
+
+/* 高度动画用 grid-template-rows 0fr → 1fr，比 max-height 更准确 */
+.acc-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--t-base) var(--ease);
+}
+
+.acc-panel > div {
+  overflow: hidden;
+}
+
+.acc-panel p {
+  padding-bottom: 18px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+  max-width: 44em;
+}
+
+.acc-item.is-open .acc-panel {
+  grid-template-rows: 1fr;
+}
+
+/* ---------- 14. 笔记卡 ---------- */
+.note {
+  display: grid;
+  gap: 8px;
+  padding: 22px 0;
+  border-top: 1px solid var(--line-strong);
+  cursor: pointer;
+  transition: color var(--t-base) var(--ease);
+}
+
+.note-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+.note h3 {
+  font-size: 16px;
+  transition: color var(--t-base) var(--ease);
+}
+
+.note:hover h3 {
+  color: var(--accent);
+}
+
+.note p {
+  font-size: 13px;
+  color: var(--ink-3);
+  max-width: 46em;
+}
+
+.note[hidden] {
+  display: none;
+}
+
+/* ---------- 15. 提示块（关于页“工具链”等） ---------- */
+.panel {
+  padding: 20px 0 0;
+  border-top: 1px solid var(--line-strong);
+}
+
+.panel h3 {
+  font-size: 14px;
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+  color: var(--ink-2);
+}
+
+.panel-body {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ---------- 16. 回到顶部 ---------- */
+.to-top {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 90;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(6px);
+  color: var(--ink-2);
+  font-family: var(--mono);
+  font-size: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity var(--t-base) var(--ease), transform var(--t-base) var(--ease),
+    visibility 0s linear var(--t-base);
+}
+
+.to-top.is-on {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+.to-top:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---------- 17. 状态胶囊（首屏可接单状态） ---------- */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-2);
+}
+
+.status i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3f8a63;
+  box-shadow: 0 0 0 0 rgba(63, 138, 99, 0.5);
+  animation: pulse 2.4s var(--ease) infinite;
+}
+
+/* ---------- 19. 补充组件与排版工具 ----------
+   说明：这些类只做「一处使用、语义明确」的小事，目的是让 HTML 里不出现 inline style。
+        命名前缀 u- 表示工具类，其余为具体组件。 */
+
+/* 主题切换按钮：小、方、贴边，不抢导航的视线 */
+.theme-toggle {
+  min-height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink-2);
+  white-space: nowrap; /* 窄屏被挤压时「深色」两个字会竖排，必须禁止换行 */
+  transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* 关于页头图：固定 16:9，图片 cover，避免不同来源图片把版式撑开 */
+.figure-banner {
+  padding-block: clamp(24px, 4vw, 40px);
+}
+
+.banner {
+  overflow: hidden;
+  background: var(--paper-2);
+  aspect-ratio: 16 / 9;
+}
+
+.banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.figcap {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+/* 栅格修饰 */
+.grid--start {
+  align-items: start;
+}
+
+.grid--wide {
+  gap: clamp(32px, 5vw, 64px);
+}
+
+/* 紧跟标题的小号说明行（筛选计数、空态提示） */
+.filter-count {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.filter-empty {
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+/* 强调链接：只在需要跳转的地方用，不做成按钮 */
+.link-more {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* 无边框的键值表：用于面板内部，靠上一条发丝线与上文分隔 */
+.kv--flush {
+  border: 0;
+  padding-top: 10px;
+  margin-top: 0;
+}
+
+/* 面板内的简单列表（合作须知） */
+.plain-list {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.plain-list li {
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+
+/* 技能分组标题 */
+.skill-title {
+  margin-top: 8px;
+  font-size: 17px;
+}
+
+/* CTA 按钮组 */
+.cta-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cta-actions--mt {
+  margin-top: 26px;
+}
+
+/* 页脚品牌名略大一号 */
+.brand-name--lg {
+  font-size: 17px;
+}
+
+.eyebrow--mb {
+  margin-bottom: 14px;
+}
+
+/* 通用 lead：不在 .page-head 里时也能用 */
+.lead {
+  font-size: 15px;
+  color: var(--ink-2);
+}
+
+.lead--tight {
+  margin-top: 12px;
+  max-width: 36em;
+}
+
+/* 404 页专用 */
+.page-404 {
+  padding-block: clamp(48px, 10vw, 120px);
+}
+
+.big-404 {
+  margin-top: 10px;
+  font-family: var(--fig);
+  font-size: clamp(64px, 18vw, 140px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.h1-404 {
+  margin-top: 18px;
+  font-size: clamp(22px, 4.4vw, 32px);
+}
+
+.footer-bottom--flush {
+  border-top: 0;
+  margin-top: 0;
+}
+
+/* 表单反馈面板里的动作行 */
+.feedback-action {
+  margin-top: 10px;
+}
+
+/* 关于页右侧信息栏：面板纵向排列，间距与区块内节奏一致 */
+.facts {
+  display: grid;
+  gap: 26px;
+}
+
+/* ---------- 20. 断点追加 ----------
+   移动优先：上面的规则全部按窄屏写，这里只在更宽的屏幕上追加列数与大字号。 */
+
+@media (min-width: 768px) {
+  .case h3 {
+    font-size: 18px;
+  }
+
+  .kv {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-cases {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cta {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .tl-item {
+    grid-template-columns: 68px 20px minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .grid-cases {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .form {
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 28px;
+  }
+
+  .field--full {
+    grid-column: 1 / -1;
+  }
+
+  .form-foot {
+    grid-column: 1 / -1;
+    justify-items: start;
+  }
+
+  .tl-year {
+    font-size: 13px;
+  }
+
+  .tl-body h3 {
+    font-size: 16px;
+  }
+
+  .tl-body p {
+    font-size: 13.5px;
+  }
+}

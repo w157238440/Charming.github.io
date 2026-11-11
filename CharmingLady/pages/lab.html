@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<!--
+  ==============================================================================
+  lab.html — 实验台（把站内用到的动效拆成可以单独观察的演示）
+  ------------------------------------------------------------------------------
+  说明：这一页不是「炫技页」，而是这站的技术说明书的可操作版本：
+        每一项都写清「怎么触发、用了什么 API、什么时候自动关闭」。
+         · 全部演示零依赖，只用 CSS 过渡 / Canvas 2D / IntersectionObserver；
+         · 演示区的波形动画提供开关，可以现场对比「有动效 / 没动效」；
+         · 所有动画都遵守 prefers-reduced-motion，并且离开视口就停止绘制（省电）。
+  注意：本页仅用于展示实现方式，演示中的数字不代表任何真实指标。
+  ==============================================================================
+-->
+<html lang="zh-CN" data-theme="light">
+<head>
+  <script>document.documentElement.classList.add('js');</script>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>实验台 — CharmingLady 的动效与交互演示</title>
+  <meta name="description" content="把站内动效拆成可单独观察的演示：逐字入场、数字滚动、磁吸、倾斜、SVG 描边、Canvas 波形、光标读数，并标注触发方式与降级策略。">
+  <meta name="author" content="CharmingLady">
+  <meta name="theme-color" content="#f4f3ed">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="实验台 — CharmingLady">
+  <meta property="og:description" content="动效不是装饰，是注意力的分配方式。">
+  <meta property="og:image" content="../assets/img/proj-editor.jpg">
+
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/effects.css">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+
+  <script src="../assets/js/core.js" defer></script>
+  <script src="../assets/js/effects.js" defer></script>
+  <script src="../assets/js/ui.js" defer></script>
+  <script src="../assets/js/lab.js" defer></script>
+</head>
+
+<body data-page="lab">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="../index.html" aria-label="CharmingLady 首页">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M16 5.5v21M5.5 16h21" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="16" cy="16" r="3.2" fill="currentColor"/>
+        </svg>
+        <span class="brand-text">
+          <span class="brand-name">CharmingLady</span>
+          <span class="brand-sub">Frontend · Backend · Miniapp</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="主导航">
+        <a href="../index.html" data-nav="home">首页</a>
+        <a href="about.html" data-nav="about">关于</a>
+        <a href="projects.html" data-nav="projects">项目</a>
+        <a href="notes.html" data-nav="notes">笔记</a>
+        <a href="services.html" data-nav="services">服务</a>
+        <a href="guestbook.html" data-nav="guestbook">留言簿</a>
+        <a href="contact.html" data-nav="contact">联系</a>
+      </nav>
+
+      <div class="header-tools">
+        <button class="theme-toggle mono" type="button" data-theme-toggle aria-pressed="false" aria-label="切换到深色主题">
+          <span data-theme-label>深色</span>
+        </button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-drawer" aria-label="打开导航菜单">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <!-- 移动端抽屉导航：与页头导航同源，内容更全（含次要页面与邮箱） -->
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="../index.html">首页 <span>01</span></a>
+    <a href="about.html">关于 <span>02</span></a>
+    <a href="projects.html">项目 <span>03</span></a>
+    <a href="notes.html">笔记 <span>04</span></a>
+    <a href="services.html">服务与合作 <span>05</span></a>
+    <a href="lab.html">实验台 <span>06</span></a>
+    <a href="faq.html">常见问题 <span>07</span></a>
+    <a href="guestbook.html">留言簿 <span>08</span></a>
+    <a href="uses.html">装备与工具 <span>09</span></a>
+    <a href="colophon.html">站点说明 <span>10</span></a>
+    <a href="contact.html">联系 <span>11</span></a>
+    <a href="disclaimer.html">免责声明 <span>12</span></a>
+    <a href="mailto:hi@charminglady.dev">hi@charminglady.dev <span>→</span></a>
+  </div>
+
+  <main id="main">
+    <!-- ===== 页面头部 ===== -->
+    <section class="shell page-head">
+      <p class="eyebrow">实验台 · 动效与交互</p>
+      <h1 data-split>动效不是装饰，是注意力的分配方式。</h1>
+      <p class="lead">
+        这一页把整站用到的动效拆开，一项一项摆出来。每一项都标明触发条件、实现方式和降级策略——
+        如果一段动画说不出它想让人看什么，它就不该出现在这里。
+      </p>
+      <p class="page-meta mono">零依赖 · 无构建 · 支持 reduced-motion · 离屏即停</p>
+    </section>
+
+    <!-- ===== 演示区 ===== -->
+    <section class="section section--flush">
+      <div class="shell">
+        <div class="section-head">
+          <h2>可以动手的 8 项</h2>
+          <p class="section-note">
+            鼠标移到对应区域即可触发；触屏设备会自动关掉磁吸与倾斜（因为没有 hover 这一态）。
+          </p>
+        </div>
+
+        <div class="lab-grid">
+          <!-- 1. 按钮与磁吸 -->
+          <article class="demo">
+            <p class="demo-label"><b>按钮 / 磁吸</b><span>CSS 过渡 + pointermove</span></p>
+            <div class="demo-stage">
+              <a class="btn" href="contact.html" data-magnetic>主按钮（带磁吸）</a>
+              <a class="btn btn--ghost" href="projects.html">次级按钮</a>
+              <button class="btn btn--sm" type="button" data-demo-toast>点我，给个反馈</button>
+            </div>
+            <p class="hud">
+              <span>实现</span>「磁吸」是按钮跟随光标做最大 4px 的位移，用 CSS 变量写入，
+              不做 transform 动画重排；离开后归零。
+            </p>
+          </article>
+
+          <!-- 2. 数字滚动 -->
+          <article class="demo">
+            <p class="demo-label"><b>数字滚动</b><span>IntersectionObserver + rAF</span></p>
+            <div class="demo-stage">
+              <p class="brand-name brand-name--lg">
+                <span data-count="128" data-suffix=" 次">128 次</span>
+              </p>
+              <p class="hud"><span>说明</span>进入视口后从 0 缓动到目标值，缓动曲线 easeOutExpo，只跑一次。</p>
+            </div>
+            <p class="hud">
+              <span>降级</span>数字写在 HTML 里，JS 不生效时直接显示最终值，不会出现空白。
+            </p>
+          </article>
+
+          <!-- 3. 倾斜 -->
+          <article class="demo">
+            <p class="demo-label"><b>卡片倾斜</b><span>pointermove + transform</span></p>
+            <div class="demo-stage">
+              <div class="tilt panel" data-demo-tilt>
+                <h3>把鼠标放到这张卡上</h3>
+                <div class="panel-body"><p>最大倾角 6°，超过就像玩具；只改 transform，不改布局，所以不会带动周围元素抖动。</p></div>
+              </div>
+            </div>
+            <p class="hud">
+              <span>限制</span>仅在 (hover: hover) and (pointer: fine) 的设备启用；触屏与减少动效偏好下完全关闭。
+            </p>
+          </article>
+
+          <!-- 4. 逐字入场 -->
+          <article class="demo">
+            <p class="demo-label"><b>标题逐字入场</b><span>DOM 拆分 + IO</span></p>
+            <div class="demo-stage">
+              <p class="brand-name brand-name--lg" data-split>先看结论，再看过程</p>
+            </div>
+            <p class="hud">
+              <span>可访问性</span>拆出来的每个字都是 aria-hidden，原文写进 aria-label，读屏不会逐字念。
+            </p>
+          </article>
+
+          <!-- 5. SVG 描边 -->
+          <article class="demo">
+            <p class="demo-label"><b>SVG 描边绘制</b><span>stroke-dashoffset</span></p>
+            <div class="demo-stage">
+              <svg viewBox="0 0 240 90" width="100%" height="90" role="img" aria-label="示意线条：三条折线依次绘出">
+                <path data-draw d="M8 70 L56 30 L104 62 L152 18 L200 44" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+                <path data-draw d="M8 78 H232" fill="none" stroke="var(--line-strong)" stroke-width="1"/>
+              </svg>
+            </div>
+            <p class="hud">
+              <span>实现</span>用 getTotalLength() 量出路径长度写入 CSS 变量，进入视口后把 dashoffset 归零，
+              视觉上就是从一头画到另一头。
+            </p>
+          </article>
+
+          <!-- 6. Canvas 波形 -->
+          <article class="demo">
+            <p class="demo-label"><b>Canvas 波形</b><span>Canvas 2D + rAF</span></p>
+            <div class="demo-stage">
+              <canvas class="wave" data-wave width="600" height="168" aria-label="两路正弦波叠加的动态示意图" role="img"></canvas>
+              <div class="switch-row">
+                <button class="switch" type="button" data-wave-toggle aria-pressed="true" aria-label="暂停波形动画"></button>
+                <span>动画开关（暂停后停在当前帧，不是清空画布）</span>
+              </div>
+            </div>
+            <p class="hud">
+              <span>省电</span>离开视口或被切到后台标签页时停止绘制；减少动效偏好下只画一帧静态曲线。
+            </p>
+          </article>
+
+          <!-- 7. 光标读数 -->
+          <article class="demo">
+            <p class="demo-label"><b>光标读数</b><span>pointermove + 节流</span></p>
+            <div class="demo-stage" data-hud-zone>
+              <div class="hud">
+                <div class="hud-row"><span>视口 X</span><b data-hud="x">—</b><span>相对本区块的百分比</span></div>
+                <div class="hud-row"><span>视口 Y</span><b data-hud="y">—</b><span>相对本区块的百分比</span></div>
+                <div class="hud-row"><span>区块内</span><b data-hud="local">—</b><span>0–100 的相对坐标</span></div>
+                <div class="hud-row"><span>帧率</span><b data-hud="fps">—</b><span>滚动的 rAF 计数，仅作参考</span></div>
+              </div>
+            </div>
+            <p class="hud">
+              <span>为什么留这个</span>调动画时最想知道的就是「光标到哪了、这一帧多久」，把它摆出来比反复截图快。
+            </p>
+          </article>
+
+          <!-- 8. 色板 -->
+          <article class="demo">
+            <p class="demo-label"><b>颜色令牌</b><span>CSS 自定义属性</span></p>
+            <div class="demo-stage">
+              <div class="swatches">
+                <div class="swatch"><i class="swatch-ink"></i><code>--ink</code></div>
+                <div class="swatch"><i class="swatch-paper"></i><code>--paper</code></div>
+                <div class="swatch"><i class="swatch-accent"></i><code>--accent</code></div>
+                <div class="swatch"><i class="swatch-jade"></i><code>--jade</code></div>
+              </div>
+            </div>
+            <p class="hud">
+              <span>规则</span>全站只用这几个变量取值；深色主题只替换变量值，不新增选择器分支。
+              点右上角主题按钮可以现场对比。
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 实现说明 ===== -->
+    <section class="section">
+      <div class="shell">
+        <div class="section-head">
+          <h2>这些动效的边界</h2>
+          <p class="section-note">加动效的成本不在写，而在「以后谁来维护、在坏设备上会怎样」。</p>
+        </div>
+
+        <div class="grid-3">
+          <article class="panel">
+            <h3>只做一次</h3>
+            <div class="panel-body">
+              <p>
+                入场动画只在第一次进入视口时播放，滚回去不会重播。重复播放会让页面显得不安分，
+                而且每次都要重算位置，长页面上会明显掉帧。
+              </p>
+            </div>
+          </article>
+          <article class="panel">
+            <h3>只改合成属性</h3>
+            <div class="panel-body">
+              <p>
+                位移、缩放、透明度优先用 transform 与 opacity，避免动画过程中反复触发布局与重绘。
+                进度条用 scaleX，不用 width——后者每帧都要重新排布。
+              </p>
+            </div>
+          </article>
+          <article class="panel">
+            <h3>一定留退路</h3>
+            <div class="panel-body">
+              <p>
+                prefers-reduced-motion: reduce 时全部起始隐藏被取消、动画关闭、噪点与光斑隐藏，
+                内容照样完整可读；JS 完全失效时，页面仍是静态可用的长文档。
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="section section--dark">
+      <div class="shell cta">
+        <h2>想看实现细节，直接看源码。</h2>
+        <p>
+          整站没有打包、没有压缩、没有混淆，打开开发者工具就能读到和源码一样的注释。
+          如果你要的正是「以后自己能改」，这种结构比任何框架都省心。
+        </p>
+        <div class="cta-actions">
+          <a class="btn" href="notes.html">读实现笔记</a>
+          <a class="btn btn--ghost" href="contact.html">聊聊你的项目</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="brand-name brand-name--lg">CharmingLady</p>
+          <p>前端 / 后端 / 小程序，一人交付。这个站点本身也是一件作品：纯静态、零依赖、断网可开。</p>
+        </div>
+
+        <div class="footer-col">
+          <h3>站点</h3>
+          <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="about.html">关于</a></li>
+            <li><a href="projects.html">项目</a></li>
+            <li><a href="notes.html">笔记</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>更多</h3>
+          <ul>
+            <li><a href="services.html">服务与合作</a></li>
+            <li><a href="lab.html">实验台</a></li>
+            <li><a href="faq.html">常见问题</a></li>
+            <li><a href="guestbook.html">留言簿</a></li>
+            <li><a href="uses.html">装备与工具</a></li>
+            <li><a href="colophon.html">站点说明</a></li>
+            <li><a href="disclaimer.html">免责声明</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>联系</h3>
+          <ul>
+            <li><a href="mailto:hi@charminglady.dev">hi@charminglady.dev</a></li>
+            <li><a href="contact.html">表单 / 微信 / 电话</a></li>
+            <li><span class="mono">北京 · UTC+8</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> CharmingLady · 代码 MIT，文字与图片 CC BY-NC 4.0</span>
+        <span>本站为演示性质作品集，内容与数据说明见<a class="link-more" href="disclaimer.html">免责声明</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <button class="to-top" type="button" aria-label="回到顶部">↑</button>
+</body>
+</html>

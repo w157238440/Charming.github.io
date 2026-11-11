@@ -1,0 +1,11 @@
+# robots.txt — CharmingLady.github.io
+# 上线后请把下面的域名换成你的真实域名（与 sitemap.xml 保持一致）
+
+User-agent: *
+Allow: /
+
+# 文档目录是写给人看的源文件，不必被收录
+Disallow: /docs/
+
+# 站点地图（绝对地址，必须是 https）
+Sitemap: https://charminglady.github.io/sitemap.xml
