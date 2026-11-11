@@ -44,7 +44,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # 站点入口 index.html 在根目录，所以整目录打包
-          path: "./CharmingLady"
+          path: "CharmingLady"
 
   deploy:
     name: 发布
