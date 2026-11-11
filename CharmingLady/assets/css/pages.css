@@ -673,6 +673,57 @@
   opacity: 0.5;
 }
 
+/* 分页条：与列表同宽，发丝线压在上沿；按钮是描边方框，
+   禁用态只降透明度不改文案，避免布局跳动。 */
+.gb-pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.gb-pager[hidden] {
+  display: none;
+}
+
+.gb-page-info {
+  margin: 0;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  opacity: 0.68;
+  text-align: center;
+}
+
+.gb-page-btn {
+  flex: 0 0 auto;
+  min-height: 44px; /* 触摸热区不小于 44px */
+  padding: 0 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+
+.gb-page-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.gb-page-btn:disabled {
+  opacity: 0.34;
+  cursor: not-allowed;
+}
+
+.gb-page-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* ---------- 19.3 写留言 ---------- */
 .gb-write-grid {
   display: grid;
