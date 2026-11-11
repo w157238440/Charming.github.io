@@ -732,6 +732,13 @@
   padding-right: 26px;
 }
 
+/* 选项列表的底色是系统给的，元素上的 color 会带进去但底色不带，
+   深色主题下就变成白底浅字；这里把底色写死，旧浏览器也能读清 */
+.field select option {
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
 .form-foot {
   display: grid;
   gap: 12px;
