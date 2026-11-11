@@ -57,6 +57,7 @@
 
 /* 深色主题：只翻转「纸与墨」两层，强调色保持一致，避免出现两套视觉语言 */
 [data-theme="dark"] {
+   color-scheme: dark;
   --ink: #f4f3ed;
   --ink-2: #e2e1d8;
   --ink-3: #b9b8ad;
